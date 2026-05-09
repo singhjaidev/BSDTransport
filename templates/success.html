@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Successful</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding-top: 4rem; }
+    .countdown { font-size: 2rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>✅ Payment successful! Your ride is booked.</h2>
+  <p>Redirecting to homepage in <span id="countdown" class="countdown">3</span>…</p>
+
+  <script>
+    let seconds = 3;
+    const el = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      seconds--;
+      el.innerText = seconds;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.href = "{{ url_for('index') }}";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

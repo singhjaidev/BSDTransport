@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BSD Transport Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+  .page-header {
+    background-image: url("{{ url_for('static', filename='images/about-bg.webp') }}");
+    padding: 8rem 0 6rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+</style><body>
+    <!-- Header with continuous background -->
+     <header class="bsd-primary-navigation">
+    <div class="bsd-nav-container">
+        <!-- Logo Section -->
+        <div class="bsd-brand-section">
+            <a href="{{ url_for('index') }}" class="bsd-logo-text">
+                <span class="bsd-logo-white">BSD</span><span class="bsd-logo-blue">Transport</span>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="bsd-desktop-menu">
+            <ul class="bsd-nav-links">
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('index') }}" class="bsd-nav-link {% if request.endpoint == 'index' %}bsd-nav-active{% endif %}">Home</a>
+                </li>
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('about') }}" class="bsd-nav-link {% if request.endpoint == 'about' %}bsd-nav-active{% endif %}">About</a>
+                </li>
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('services') }}" class="bsd-nav-link {% if request.endpoint == 'services' %}bsd-nav-active{% endif %}">Services</a>
+                </li>
+                {% if session.get('name') %}
+                    <li class="bsd-nav-item dropdown-parent">
+                        <a href="javascript:void(0);" class="bsd-nav-link" onclick="toggleDropdown()">
+                            {{ session['name'][0]|upper }}
+                        </a>
+                        <div id="dropdownMenu" class="dropdown-content" style="display: none;">
+                            <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}">Dashboard</a>
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="bsd-nav-item">
+                        <a href="{{ url_for('login') }}" class="bsd-login-button">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="bsd-hamburger-btn" id="bsdHamburgerBtn" onclick="toggleMobileMenu()">
+            <span class="bsd-hamburger-line"></span>
+            <span class="bsd-hamburger-line"></span>
+            <span class="bsd-hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="bsd-mobile-menu" id="bsdMobileMenu">
+        <div class="bsd-mobile-menu-content">
+            <div class="bsd-mobile-nav-links">
+                <a href="{{ url_for('index') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'index' %}bsd-mobile-active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'about' %}bsd-mobile-active{% endif %}">About</a>
+                <a href="{{ url_for('services') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'services' %}bsd-mobile-active{% endif %}">Services</a>
+            </div>
+            <div class="bsd-mobile-divider"></div>
+            <div class="bsd-mobile-login-section">
+                {% if session.get('name') %}
+                    <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}" class="bsd-mobile-login-btn">Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="bsd-mobile-login-btn">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="bsd-mobile-login-btn">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="page-title">We Drive, Not Outsource</h1>
+                <p class="page-subtitle">Premium transportation redefined</p>
+                <div class="header-decoration"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Story Section -->
+    <section class="about-story">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="image-wrapper">
+                        <img src="{{ url_for('static', filename='images/about-image.jpg') }}" alt="BSD Transport Team">
+                        <div class="image-overlay"></div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <div class="section-header text-left">
+                        <span class="section-tag">Our Journey</span>
+<h2>Paris Airport Transfers — The Original <span style="color: #004f95;">#1</span></h2>
+                        <div class="section-divider"></div>
+                    </div>
+                    <div class="story-content">
+                        <p class="lead-text">We were the very first to offer dedicated airport transfer services to and from Paris — long before it became a trend. From day one, our mission has been clear: deliver a premium, in-house experience with zero subcontracting, complete reliability, and unmatched customer care.</p>
+                        
+                        <div class="story-highlight">
+                            <div class="highlight-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"STP was built on the idea that airport transfers deserve better. No third parties. No compromises. Just our team, our vehicles, and our standards — fully under our control."</p>
+                        </div>
+                        
+                        <p>Today, we proudly operate with a 100% in-house team, offering fixed pricing, trained staff, and a seamless experience trusted by thousands of travelers. This approach has made us the benchmark in airport transportation across Paris.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Why Choose Us</span>
+                <h2>Premium Features That Set Us Apart</h2>
+                <p class="section-description">Experience the difference with our exclusive services designed for your comfort and convenience</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-number">01</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h3>Personalized Airport Pickup</h3>
+                    <p>Your driver will be waiting for you at the airport holding a sign with your name — no stress, no confusion, even after a long flight.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">02</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3>Unmarked Vehicle Privacy</h3>
+                    <p>Unlike Uber, our vehicles have no VTC stickers or commercial signs, offering more discretion and a premium experience.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">03</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-dollar"></i>
+                    </div>
+                    <h3>Fixed Transparent Pricing</h3>
+                    <p>Enjoy transparent, all-inclusive rates — no surge pricing, no hidden fees, no unpleasant surprises.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">04</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Bilingual Professional Drivers</h3>
+                    <p>Our drivers are experienced, punctual, and bilingual (English & French), ready to help and share local tips.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">05</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Advance Booking & Secure Payment</h3>
+                    <p>Book your ride in advance, receive instant confirmation, and pay securely online — peace of mind guaranteed.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">06</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Dedicated Customer Support</h3>
+                    <p>Unlike large platforms, we provide personalized assistance via phone, WhatsApp, or email, before and during your trip.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">07</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-plane-departure"></i>
+                    </div>
+                    <h3>Flight Delay Protection</h3>
+                    <p>We monitor your flight in real-time. If your flight is delayed, your driver adjusts pickup time accordingly — at no extra cost.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">08</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-suitcase"></i>
+                    </div>
+                    <h3>Spacious Luggage-Ready Vehicles</h3>
+                    <p>Travel comfortably in vehicles tailored to your needs, with space for suitcases, strollers, sports gear, or baby seats.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-number">09</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Private Driver Throughout Stay</h3>
+                    <p>Want to explore more? Request the same driver for your entire trip — perfect for tours, business travel, or families.</p>
+                </div>
+
+                <!-- <div class="feature-card">
+                    <div class="feature-number">10</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Family & Group Tailored Service</h3>
+                    <p>We offer child seats, vans, and group transfers, ensuring a safe and comfortable ride for everyone — from solo travelers to large families.</p>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Values Section -->
+    <section class="mission-values">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Foundation</span>
+                <h2>Mission & Core Values</h2>
+                <p class="section-description">Guided by principles that put customers first</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safety First</h3>
+                    <p>We prioritize the safety of our passengers and drivers above all else. All our vehicles undergo rigorous maintenance checks, and our drivers are thoroughly vetted and trained.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Reliability</h3>
+                    <p>We understand that punctuality matters. Our commitment to timely pickups and efficient routes ensures you reach your destination on schedule, every time.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Customer Focus</h3>
+                    <p>Your satisfaction drives everything we do. We continuously seek feedback and make improvements to enhance your experience with BSD Transport.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to reducing our environmental impact by gradually transitioning to a fleet of hybrid and electric vehicles and implementing eco-friendly practices.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We embrace technology to make your ride experience smoother and more enjoyable, from our user-friendly app to our advanced ride tracking system.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Community</h3>
+                    <p>We're more than just a taxi service; we're part of the community. We actively participate in local initiatives and give back through various community programs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <!-- <span class="section-tag">Leadership</span> -->
+                <h2>Meet Our Leadership Team</h2>
+                <p class="section-description">The people driving our vision forward</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{{ url_for('static', filename='images/team-1.jpg') }}" alt="David Mitchell">
+                        <div class="member-overlay">
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>David Mitchell</h3>
+                        <p class="member-role">Founder & CEO</p>
+                        <p class="member-bio">With over 20 years in the transportation industry, David's leadership has been instrumental in establishing BSD Transport as a market leader.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{{ url_for('static', filename='images/team-2.jpg') }}" alt="Sarah Johnson">
+                        <div class="member-overlay">
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Sarah Johnson</h3>
+                        <p class="member-role">Chief Operations Officer</p>
+                        <p class="member-bio">Sarah oversees the day-to-day operations, ensuring that our service runs smoothly and efficiently across all locations.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{{ url_for('static', filename='images/team-3.jpg') }}" alt="Michael Zhang">
+                        <div class="member-overlay">
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Michael Zhang</h3>
+                        <p class="member-role">Chief Technology Officer</p>
+                        <p class="member-bio">Michael leads our tech team, developing innovative solutions that enhance the ride experience for both customers and drivers.</p>
+                    </div>
+                </div>
+                <!-- <div class="team-member">
+                    <div class="member-image">
+                        <img src="{{ url_for('static', filename='images/team-4.jpg') }}" alt="Lisa Rodriguez">
+                        <div class="member-overlay">
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Lisa Rodriguez</h3>
+                        <p class="member-role">Customer Experience Director</p>
+                        <p class="member-bio">Lisa is passionate about ensuring every customer has an exceptional experience with BSD Transport from booking to destination.</p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-block">
+                    <div class="stat-number" data-count="10">0</div>
+                    <div class="stat-label">Years in Business</div>
+                    <div class="stat-suffix">+</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" data-count="500">0</div>
+                    <div class="stat-label">Professional Drivers</div>
+                    <div class="stat-suffix">+</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" data-count="1000000">0</div>
+                    <div class="stat-label">Successful Rides</div>
+                    <div class="stat-suffix">+</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">Cities Served</div>
+                    <div class="stat-suffix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-text">
+                    <span class="cta-tag">Ready to Experience BSD?</span>
+                    <h2>Book Your Premium Ride Today</h2>
+                    <p>Experience the difference with our premium transportation services</p>
+                </div>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+   <footer class="footer">
+  <div class="footer__container">
+    <div class="footer__grid">
+      <!-- Company Info (spans 2 on lg) -->
+      <div class="footer__company footer__company--span2">
+        <div class="footer__logo">
+          BSD<span class="footer__logo--highlight">Transport</span>
+        </div>
+        <p class="footer__description">
+          Premium airport transfer service in Paris. We provide reliable, comfortable, and professional transportation solutions for travelers who value quality and punctuality.
+        </p>
+        <div class="footer__social">
+          <a href="#" class="footer__social-icon footer__social-icon--facebook" aria-label="Facebook">f</a>
+          <a href="#" class="footer__social-icon footer__social-icon--twitter"  aria-label="Twitter">t</a>
+          <a href="#" class="footer__social-icon footer__social-icon--linkedin" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer__section">
+        <h3 class="footer__title">Quick Links</h3>
+        <ul class="footer__list">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Airport Transfer</a></li>
+          <li><a href="#">City Tours</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Our Services -->
+      <div class="footer__section">
+        <h3 class="footer__title">Our Services</h3>
+        <ul class="footer__list">
+          <li><a href="#">Airport Transfers</a></li>
+          <li><a href="#">City Tours</a></li>
+          <li><a href="#">Business Travel</a></li>
+          <li><a href="#">Group Transportation</a></li>
+          <li><a href="#">Wedding Transport</a></li>
+          <li><a href="#">Hourly Rentals</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 BSD Transport. All rights reserved.</p>
+      <div class="footer__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+</body>
+</html>

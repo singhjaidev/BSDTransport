@@ -1,0 +1,8 @@
+{
+  "python.pythonPath": "virtualenv\\Scripts\\python.exe",
+  "terminal.integrated.env.windows": {
+    "VIRTUAL_ENV": "${workspaceFolder}\\virtualenv",
+    "PATH": "${workspaceFolder}\\virtualenv\\Scripts;${env:PATH}"
+  },
+  "liveServer.settings.port": 5501
+}

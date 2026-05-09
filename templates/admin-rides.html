@@ -1,0 +1,723 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Bookings - Admin - BSD Transport</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+
+    .modern-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modern-dropdown:hover {
+  border-color: #9ca3af;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.modern-dropdown:focus {
+  outline: none;
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.15);
+}
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-wrapper::after {
+  content: '\25BC';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #6b7280;
+}
+
+
+    .table-responsive {
+  background: white !important;
+  border-radius: 8px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  overflow-x: auto !important;     /* ← add this */
+  -webkit-overflow-scrolling: touch !important;
+}
+
+    /* Enhanced responsive styles */
+    
+    /* Main content styling */
+    .dashboard-main {
+      padding: 2rem !important;
+      background-color: #f8fafc !important;
+      min-height: 100vh !important;
+    }
+    
+    /* Top navigation responsive */
+    .dashboard-topnav {
+      padding: 1rem 2rem !important;
+      background: white !important;
+      border-bottom: 1px solid #e5e7eb !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    /* Dashboard content container */
+    .dashboard-content {
+      margin-top: 0 !important;
+    }
+    
+    /* Enhanced dashboard section */
+    .dashboard-section {
+      background: white !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+      padding: 2rem !important;
+      border: 1px solid #f1f5f9 !important;
+    }
+    
+    /* Section header enhanced */
+    .section-header {
+      margin-bottom: 2rem !important;
+      padding-bottom: 1rem !important;
+      border-bottom: 2px solid #f1f5f9 !important;
+    }
+    
+    .section-header h2 {
+      font-size: 1.875rem !important;
+      font-weight: 700 !important;
+      color: #1e293b !important;
+      margin: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.75rem !important;
+    }
+    
+    .section-header h2::before {
+      content: '\f1b9' !important;
+      font-family: 'Font Awesome 6 Free' !important;
+      font-weight: 900 !important;
+      color: #3b82f6 !important;
+      font-size: 1.5rem !important;
+    }
+    
+    /* Table container - no scroll on large screens */
+    .table-responsive {
+      background: white !important;
+      border-radius: 8px !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+      /* overflow: visible !important; */
+    }
+    
+    /* Enhanced table styling */
+    .data-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      font-size: 0.9375rem !important;
+      line-height: 1.5 !important;
+    }
+    
+    .data-table th {
+      background: #f7f7f7 !important;
+      color: #000000 !important;
+      font-weight: 600 !important;
+      text-align: left !important;
+      padding: 1.25rem 1.5rem !important;
+      border: none !important;
+      font-size: 0.875rem !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      position: relative !important;
+    }
+    
+    .data-table th:first-child {
+      border-top-left-radius: 8px !important;
+    }
+    
+    .data-table th:last-child {
+      border-top-right-radius: 8px !important;
+    }
+    
+    .data-table td {
+      padding: 1.25rem 1.5rem !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+      color: #475569 !important;
+      font-weight: 500 !important;
+      vertical-align: middle !important;
+    }
+    
+    .data-table tbody tr {
+      transition: all 0.2s ease !important;
+    }
+    
+    .data-table tbody tr:hover {
+      background-color: rgba(255, 193, 7, 0.15) !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    .data-table tbody tr:last-child td {
+      border-bottom: none !important;
+    }
+    
+    /* Enhanced cell styling */
+    .data-table td:first-child {
+      font-weight: 700 !important;
+      color: #3b82f6 !important;
+    }
+    
+    .data-table td:last-child {
+      font-weight: 600 !important;
+      color: #059669 !important;
+      font-size: 1rem !important;
+    }
+    
+    /* Enhanced pagination */
+    .pagination {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      margin-top: 2rem !important;
+      flex-wrap: wrap !important;
+    }
+    
+    .pagination a {
+      padding: 0.75rem 1rem !important;
+      text-decoration: none !important;
+      border: 2px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      background-color: white !important;
+      color: #475569 !important;
+      font-size: 0.875rem !important;
+      font-weight: 500 !important;
+      transition: all 0.3s ease !important;
+      min-width: 44px !important;
+      text-align: center !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .pagination a:hover {
+      background-color: #f1f5f9 !important;
+      border-color: #94a3b8 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .pagination a.active {
+      background: #f7f7f7 !important;
+      color: #000000 !important;
+      border-color: #f7f7f7 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .pagination a.active:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Stats cards above table */
+    .stats-container {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+      gap: 1.5rem !important;
+      margin-bottom: 2rem !important;
+    }
+    
+    .stat-card {
+      background: #f7f7f7 !important;
+      color: #000000 !important;
+      padding: 1.5rem !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+      text-align: center !important;
+    }
+    
+    .stat-card h3 {
+      font-size: 2rem !important;
+      font-weight: 700 !important;
+      margin: 0 0 0.5rem 0 !important;
+    }
+    
+    .stat-card p {
+      font-size: 0.875rem !important;
+      opacity: 0.8 !important;
+      margin: 0 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+    }
+    
+    /* Medium screens (tablets) */
+    @media (max-width: 1024px) {
+      .dashboard-main {
+        padding: 1.5rem !important;
+      }
+      
+      .dashboard-section {
+        padding: 1.5rem !important;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 1rem 1.25rem !important;
+      }
+    }
+    
+    /* Small screens - enable horizontal scroll */
+    @media (max-width: 768px) {
+      .dashboard-main {
+        padding: 1rem !important;
+      }
+      
+      .dashboard-topnav {
+        padding: 0.75rem 1rem !important;
+      }
+      
+      .dashboard-section {
+        padding: 1rem !important;
+        border-radius: 8px !important;
+      }
+      
+      .section-header {
+        margin-bottom: 1.5rem !important;
+      }
+      
+      .section-header h2 {
+        font-size: 1.5rem !important;
+      }
+      
+      /* Enable horizontal scroll for small screens */
+      .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+      
+      .data-table {
+        min-width: 600px !important;
+        font-size: 0.875rem !important;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 0.875rem 1rem !important;
+        white-space: nowrap !important;
+      }
+      
+      .stats-container {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+        gap: 1rem !important;
+      }
+      
+      .stat-card {
+        padding: 1rem !important;
+      }
+      
+      .stat-card h3 {
+        font-size: 1.5rem !important;
+      }
+    }
+    
+    /* Very small screens */
+    @media (max-width: 480px) {
+      .dashboard-main {
+        padding: 0.75rem !important;
+      }
+      
+      .dashboard-section {
+        padding: 0.75rem !important;
+        border-radius: 6px !important;
+      }
+      
+      .section-header h2 {
+        font-size: 1.25rem !important;
+      }
+      
+      .data-table {
+        min-width: 500px !important;
+        font-size: 0.8125rem !important;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 0.75rem 0.875rem !important;
+      }
+      
+      .pagination a {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.8125rem !important;
+        min-width: 36px !important;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    
+    /* Large screens optimization */
+    @media (min-width: 1200px) {
+      .dashboard-main {
+        padding: 2.5rem !important;
+      }
+      
+      .dashboard-section {
+        padding: 2.5rem !important;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 1.5rem 2rem !important;
+      }
+      
+      .section-header h2 {
+        font-size: 2rem !important;
+      }
+    }
+    
+    /* Ensure dashboard container is responsive */
+    .dashboard-container {
+      min-height: 100vh !important;
+      display: flex !important;
+    }
+    
+    .dashboard-main {
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+    
+    /* Custom scrollbar for table on small screens */
+    .table-responsive::-webkit-scrollbar {
+      height: 8px !important;
+    }
+    
+    .table-responsive::-webkit-scrollbar-track {
+      background: #f1f5f9 !important;
+      border-radius: 4px !important;
+    }
+    
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: #f7f7f7 !important;
+      border-radius: 4px !important;
+    }
+    
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: #e5e5e5 !important;
+    }
+  </style>
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <a href="{{ url_for('index') }}">
+            <span class="logo-text">BSD<span class="highlight">Transport</span></span>
+          </a>
+        </div>
+        <button class="sidebar-close" aria-label="Close sidebar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="user-info">
+        <div class="user-avatar">
+          <!-- <img src="{{ url_for('static', filename='images/admin-avatar.jpg') }}" alt="Admin Avatar" /> -->
+        </div>
+        <div class="user-details">
+          <h3>Admin User</h3>
+          <p>Administrator</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="{{ url_for('admin_dashboard') }}">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="active">
+            <a href="{{ url_for('admin_rides') }}">
+              <i class="fas fa-taxi"></i>
+              <span>Rides</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin_pricing') }}">
+              <i class="fas fa-dollar-sign"></i>
+              <span>Pricing</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('admin_noti') }}">
+              <i class="fas fa-bell"></i>
+              <span>Notifications</span>
+            </a>
+          </li>
+          <li class="sidebar-divider"></li>
+          <li>
+            <a href="{{ url_for('admin_logout') }}">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <!-- Top Navigation -->
+      <nav class="dashboard-topnav">
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+
+      <!-- Bookings Table -->
+      <section class="dashboard-content">
+        <div class="dashboard-section">
+          <div class="section-header">
+            <h2>All Bookings</h2>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="stats-container">
+            <div class="stat-card">
+              <h3>{{ bookings|length }}</h3>
+              <p>Total Bookings</p>
+            </div>
+            <div class="stat-card">
+              <h3>€{{ "%.0f"|format(bookings|sum(attribute='price')) }}</h3>
+              <p>Total Revenue</p>
+            </div>
+            <div class="stat-card">
+              <h3>€{{ "%.0f"|format((bookings|sum(attribute='price')) / (bookings|length) if bookings|length > 0 else 0) }}</h3>
+              <p>Average Booking</p>
+            </div>
+          </div>
+            <!-- 1) Sort‐By Dropdown -->
+  <div style="margin-bottom: 1rem;">
+    <form method="get" action="{{ url_for('admin_rides') }}">
+      <select
+  name="sort_by"
+  onchange="this.form.submit()"
+  class="modern-dropdown"
+>
+  <option value="" disabled {{ 'selected' if not sort_by }}>Sort By</option>
+  <option value="date_asc" {{ 'selected' if sort_by == 'date_asc' }}>Date (Oldest First)</option>
+  <option value="date_desc" {{ 'selected' if sort_by == 'date_desc' }}>Date (Latest First)</option>
+  <option value="price_desc" {{ 'selected' if sort_by == 'price_desc' }}>Price (Highest)</option>
+  <option value="price_asc" {{ 'selected' if sort_by == 'price_asc' }}>Price (Lowest)</option>
+  <option value="name" {{ 'selected' if sort_by == 'name' }}>Name</option>
+  <option value="email" {{ 'selected' if sort_by == 'email' }}>Email</option>
+</select>
+
+      <!-- We omit “page” here so that sorting always jumps back to page 1. -->
+    </form>
+  </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+  <tr>
+    <th>Booking ID</th>
+    <th>Name</th>
+    <th>Phone Number</th>
+    <th>Email</th>
+    <th>Booking Date</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Date &amp; Time</th>
+    <th>Return Date &amp; Time</th>
+    <th>Trip Type</th>
+    <th>Amount</th>
+  </tr>
+</thead>
+
+             <tbody>
+  {% for b in bookings %}
+  <tr>
+    <td>#{{ b['id'] }}</td>
+
+    <!-- Name -->
+    <td>{{ b['name'] or '-' }}</td>
+
+    <!-- Phone Number -->
+    <td>{{ b['phone_number'] or '-' }}</td>
+
+    <!-- Email -->
+    <td>{{ b['email'] or '-' }}</td>
+
+    <!-- Booking Date (cur_date + cur_time) -->
+    <td>
+      {% if b['cur_date'] and b['cur_time'] %}
+        {{ b['cur_date'] }} | {{ b['cur_time'] }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+
+    <!-- From -->
+    <td>{{ b['pickup'] or '-' }}</td>
+
+    <!-- To -->
+    <td>{{ b['dropoff'] or '-' }}</td>
+
+    <!-- Date & Time (ride_date + hour:minute) -->
+    <td>
+      {% if b['ride_date'] is not none %}
+        {{ b['ride_date'] }} | {{ "%02d"|format(b['hour']|int) }}:{{ "%02d"|format(b['minute']|int) }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+
+    <!-- Return Date & Time -->
+    <td>
+      {% if b['return_date'] and b['return_time'] %}
+        {{ b['return_date'] }} | {{ b['return_time'] }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+
+    <!-- Trip Type -->
+    <td>{{ b['trip_type'] or '-' }}</td>
+
+    <!-- Amount -->
+    <td>€{{ "%.2f"|format(b['price'] or 0) }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+            </table>
+          </div>
+
+          <!-- Pagination -->
+            <div class="pagination">
+    {% if page > 1 %}
+      <a href="{{ url_for('admin_rides',
+                           page=page-1,
+                           sort_by=sort_by) }}">&laquo; Previous</a>
+    {% endif %}
+
+    {% for p in range(1, total_pages + 1) %}
+      <a
+        href="{{ url_for('admin_rides',
+                         page=p,
+                         sort_by=sort_by) }}"
+        class="{{ 'active' if p == page else '' }}"
+      >{{ p }}</a>
+    {% endfor %}
+
+    {% if page < total_pages %}
+      <a href="{{ url_for('admin_rides',
+                           page=page+1,
+                           sort_by=sort_by) }}">Next &raquo;</a>
+    {% endif %}
+  </div>
+</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Existing menu toggle functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.dashboard-sidebar');
+    const sidebarClose = document.querySelector('.sidebar-close');
+
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.add('sidebar-open');
+      });
+    }
+
+    if (sidebarClose && sidebar) {
+      sidebarClose.addEventListener('click', () => {
+        sidebar.classList.remove('sidebar-open');
+      });
+    }
+
+    // Enhanced responsive functionality
+    window.addEventListener('resize', function() {
+      // Close sidebar on larger screens if it's open
+      if (window.innerWidth > 768 && sidebar.classList.contains('sidebar-open')) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+
+    // Enhanced table interaction
+    const tableContainer = document.querySelector('.table-responsive');
+    if (tableContainer) {
+      let scrollTimeout;
+      
+      tableContainer.addEventListener('scroll', function() {
+        // Add scroll indicator
+        this.style.borderColor = '#3b82f6';
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          this.style.borderColor = '#e2e8f0';
+        }, 300);
+      });
+    }
+
+    // Add smooth animations to table rows
+    const tableRows = document.querySelectorAll('.data-table tbody tr');
+    tableRows.forEach((row, index) => {
+      row.style.animationDelay = `${index * 0.05}s`;
+      row.style.animation = 'fadeInUp 0.5s ease forwards';
+    });
+
+    // Add CSS animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+  <!-- Sidebar/Topbar JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Ignore the environment folder
+virtualenv/
+.venv/
+node_modules/
+venv/
+flask_session/
+taxii/
+
+# Ignore the secrets file (create this next)
+.env
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.zip

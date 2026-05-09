@@ -1,0 +1,33 @@
+
+
+
+clear db when hosting
+
+
+
+login giving error of otp...and resend otp option.........
+
+
+
+
+
+
+
+
+
+static 
+template
+
+
+
+
+
+
+
+
+sp update:
+1. wah wah kya design banayela hai mza aya
+2. sirf design banela hai, i try navbar but neend so highly powerful that i understand nothing what i do, and nothing working what i do, so i undo all changes of navbar, now no changes in navbar
+3. jo design bna for ride booking page guest wala -> html and js delete kr ke new likhi, but tere nakhre jyada ho jaye aur undo krna ho, to functions sticky note pe likh diye h, upr html niche 2 functions of js, chatgpt ki chat history pe dekh lio smjh a jayga kidhr se liya kidhr paste krna h, ya fir js file undo kr lio, 
+4. pr progress bar acha hai to zrurat nahi pdegi
+5. huehuehue

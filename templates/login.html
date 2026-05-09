@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - CityRide</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-left">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <i class="fas fa-car"></i>
+        </div>
+        <h1 class="brand-title">CityRide</h1>
+        <p class="brand-subtitle">Your premium ride experience</p>
+      </div>
+      
+      <div class="feature-list">
+        <div class="feature-item">
+          <i class="fas fa-shield-alt"></i>
+          <span>Secure & Safe</span>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-clock"></i>
+          <span>24/7 Available</span>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-star"></i>
+          <span>Top Rated Service</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="login-box">
+        <div class="back-to-home">
+          <a href="{{ url_for('index') }}" class="back-home-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+          </a>
+        </div>
+        
+        <div class="login-header">
+          <h2>Welcome Back</h2>
+          <p>Please sign in to your account</p>
+        </div>
+
+        <div class="login-tabs">
+          <button class="tab-btn active" data-tab="user">
+            <i class="fas fa-user"></i>
+            <span>User</span>
+          </button>
+          <button class="tab-btn" data-tab="register">
+            <i class="fas fa-user-plus"></i>
+            <span>Register</span>
+          </button>
+          <button class="tab-btn" data-tab="admin">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+          </button>
+        </div>
+
+        <!-- User Login Form -->
+        <div class="tab-content active" id="user">
+          <div class="form-section">
+            <label class="form-label">Phone Number</label>
+            <div class="input-group">
+              <i class="fas fa-phone input-icon"></i>
+              <input type="tel" id="userPhone" placeholder="Enter your phone number" />
+            </div>
+            <div class="error-message" id="userErrorMsg"></div>
+            
+            <button class="btn btn-primary" id="getOtpBtn">
+              <span>Get OTP</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <div class="form-group otp-section" id="userOtpGroup" style="display: none;">
+  <label class="form-label">Verification Code</label>
+  <div class="input-group">
+    <i class="fas fa-key input-icon"></i>
+    <input
+      type="text"
+      id="userOtp"
+      placeholder="Enter 6-digit OTP"
+      maxlength="6"
+    />
+  </div>
+
+  <!-- VERIFY button (initially hidden) -->
+  <button
+    class="btn btn-primary"
+    id="verifyUserBtn"
+    style="display: none;"
+  >
+    <span>Verify & Login</span>
+    <i class="fas fa-check"></i>
+  </button>
+
+  <!-- RESEND OTP button (initially hidden & disabled) -->
+  <button
+    class="btn btn-primary"
+    id="resendOtpBtn"
+    disabled
+    style="display: none; margin-top: 1rem;"
+  >
+    <span id="resendOtpText">Resend OTP (30s)</span>
+  </button>
+
+  <!-- CHANGE NUMBER link (initially hidden) -->
+  <p style="margin-top: 0.75rem;">
+    <a
+      href="#"
+      id="changeNumberLink"
+      style="display: none; font-size: 0.9rem; color: #000;"
+    >
+      Change Number
+    </a>
+  </p>
+</div>
+
+            
+            <div class="switch-link">
+              <span>New to CityRide? </span>
+              <a href="#" id="showRegister">Create Account</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="tab-content" id="register">
+          <div class="form-section">
+            <div class="input-group">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="regName" placeholder="Full Name" />
+            </div>
+            
+            <div class="input-group">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="regEmail" placeholder="Email Address" />
+            </div>
+            
+            <div class="input-group">
+              <i class="fas fa-phone input-icon"></i>
+              <input type="tel" id="regPhone" placeholder="Phone Number" />
+            </div>
+            
+            <div class="error-message" id="regErrorMsg"></div>
+            
+            <button class="btn btn-primary" id="regGetOtp">
+              <span>Get Verification Code</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <div class="form-group otp-section" id="regOtpGroup">
+              <label class="form-label">Verification Code</label>
+              <div class="input-group">
+                <i class="fas fa-key input-icon"></i>
+                <input type="text" id="regOtp" placeholder="Enter 6-digit OTP" maxlength="6" />
+              </div>
+              <button class="btn btn-primary" id="regVerifyBtn">
+                <span>Create Account</span>
+                <i class="fas fa-check"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Login -->
+        <div class="tab-content" id="admin">
+          <div class="form-section">
+            <div class="input-group">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="adminEmail" placeholder="Admin Email" />
+            </div>
+            
+            <div class="input-group">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="adminPassword" placeholder="Password" />
+            </div>
+            
+            <div class="error-message" id="adminErrorMsg"></div>
+            
+            <button class="btn btn-primary" id="adminLoginBtn">
+              <span>Admin Login</span>
+              <i class="fas fa-sign-in-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Pricing - CityRide Taxi Service</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    .pricing-section {
+      padding: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .vehicle-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .vehicle-btn {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #f0f0f0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #000;
+      cursor: pointer;
+      min-width: 100px;
+      max-width: 150px;
+      height: 70px;
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .vehicle-btn.selected {
+      background-color: #000;
+      color: #fff;
+    }
+    
+    .input-wrapper {
+      margin-bottom: 1.5rem;
+      width: 100%;
+    }
+    
+    #price-input {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f0f0f0;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    
+    #update-btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #ccc;
+      color: #fff;
+      font-size: 1rem;
+      cursor: not-allowed;
+      transition: background-color 0.3s ease;
+    }
+    
+    #update-btn:not([disabled]) {
+      background-color: #000;
+      cursor: pointer;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .pricing-section {
+        padding: 1.5rem;
+        max-width: 100%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .vehicle-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .vehicle-btn {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+    /* Toggle sidebar visibility */
+.dashboard-sidebar {
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .dashboard-sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .dashboard-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .dashboard-main {
+    margin-left: 0 !important;
+  }
+}
+
+  </style>
+</head>
+
+<body class="dashboard-body">
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <a href="{{ url_for('index') }}">
+  <span class="logo-text">BSD<span class="highlight">Transport</span></span>
+</a>
+
+        </div>
+        <button class="sidebar-close" aria-label="Close sidebar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="user-info">
+        <div class="user-avatar">
+          <!-- <img src="{{ url_for('static', filename='images/admin-avatar.jpg') }}" alt="Admin Avatar" />  -->
+        </div>
+        <div class="user-details">
+          <h3>Admin User</h3>
+          <p>Administrator</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="{{ url_for('admin_dashboard') }}">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a href="admin-bookings.html">
+              <i class="fas fa-taxi"></i>
+              <span>Bookings</span>
+            </a>
+          </li>
+          <li>
+            <a href="admin-drivers.html">
+              <i class="fas fa-id-card"></i>
+              <span>Drivers</span>
+            </a>
+          </li>
+          <li>
+            <a href="admin-customers.html">
+              <i class="fas fa-users"></i>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li>
+            <a href="admin-vehicles.html">
+              <i class="fas fa-car"></i>
+              <span>Vehicles</span>
+            </a>
+          </li> -->
+          <li>
+                        <a href="{{ url_for('admin_rides') }}">
+    <i class="fas fa-taxi"></i>
+    <span>Rides</span>
+</a>
+                    </li>
+          <li class="active">
+            <a href="{{ url_for('admin_pricing') }}">
+              <i class="fas fa-dollar-sign"></i>
+              <span>Pricing</span>
+            </a>
+          </li>
+           <li>
+            <a href="{{ url_for('admin_noti') }}">
+              <i class="fas fa-bell"></i>
+              <span>Notifications</span>
+            </a>
+          </li>
+          <!--<li>
+            <a href="admin-support.html">
+              <i class="fas fa-headset"></i>
+              <span>Support</span>
+            </a>
+          </li>
+          <li>
+            <a href="admin-settings.html">
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </a>
+          </li> -->
+          <li class="sidebar-divider"></li>
+          <li>
+            <a href="{{ url_for('admin_logout') }}">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+
+      <!-- Top Navigation -->
+      <nav class="dashboard-topnav">
+        <button class="menu-toggle" aria-label="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+        <!-- <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search..." />
+        </div>
+        <div class="topnav-actions">
+          <div class="date-display">
+            <i class="far fa-calendar-alt"></i>
+            <span>May 16, 2023</span>
+          </div>
+          <button class="notification-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">5</span>
+          </button>
+          <div class="user-dropdown">
+            <button class="user-dropdown-btn">
+              <img src="{{ url_for('static', filename='images/admin-avatar.jpg') }}" alt="Admin Avatar" />
+              <span>Admin User</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown-content">
+              <a href="admin-profile.html"><i class="fas fa-user"></i> My Profile</a>
+              <a href="admin-settings.html"><i class="fas fa-cog"></i> Settings</a>
+              <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div> -->
+      </nav>
+
+      <!-- Pricing Content -->
+      <div style="display: flex; flex-direction: column; align-items: center; padding: 2rem;">
+  <h1 style="text-align: center; margin-bottom: 2rem;">Pricing</h1>
+
+  <div class="pricing-section" style="width: 100%; max-width: 500px;">
+    <div class="vehicle-buttons" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+      <button class="vehicle-btn" data-type="Standard">Standard</button>
+      <button class="vehicle-btn" data-type="Business">Business</button>
+      <button class="vehicle-btn" data-type="Van">Van</button>
+    </div>
+
+    <div class="input-wrapper" style="margin-bottom: 1.5rem;">
+      <input type="text" id="price-input" placeholder="Enter price (€)" disabled style="
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: #f0f0f0;
+        font-size: 1rem;
+      ">
+    </div>
+
+   <form method="POST" action="{{ url_for('admin_pricing') }}">
+  <input type="hidden" id="vehicle-type" name="vehicle_type" value="">
+  <input type="hidden" id="vehicle-price" name="vehicle_price" value="">
+
+  <button id="update-btn" type="submit" disabled style="
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #ccc;
+    color: #fff;
+    font-size: 1rem;
+    cursor: not-allowed;
+    transition: background-color 0.3s ease;
+  ">Update Prices</button>
+</form>
+
+  </div>
+</div>
+
+    </main>
+  </div>
+
+<script>
+  const vehicleButtons = document.querySelectorAll('.vehicle-btn');
+  const input          = document.getElementById('price-input');
+  const updateBtn      = document.getElementById('update-btn');
+
+  let selectedType = null;
+
+  // ─── Vehicle‐Selection Logic ───
+  vehicleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Deselect all, then select this one
+      vehicleButtons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+
+      // Save the type:
+      selectedType = button.dataset.type;
+
+      // Enable + reset the input field:
+      input.disabled = false;
+      input.style.backgroundColor = '#fff';
+      input.value = '00.00';
+      setCursor(0);
+
+      // Disable the Update button until a valid number arrives:
+      updateBtn.disabled = true;
+      updateBtn.style.backgroundColor = '#ccc';
+      updateBtn.style.cursor = 'not-allowed';
+
+      console.log("Vehicle selected:", selectedType);
+    });
+  });
+
+
+  // ─── Masked‐Input FOR DESKTOP (keydown) ───
+  let rawDigits = ['0','0','0','0'];
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') return;
+    e.preventDefault();
+
+    const pos = input.selectionStart;
+    if (e.key === 'Backspace') {
+      const logicalPos = getLogicalPos(pos);
+      if (logicalPos > 0) {
+        rawDigits[logicalPos - 1] = '0';
+        updateDisplay();
+        setCursor(getVisualPos(logicalPos - 1));
+      }
+      return;
+    }
+    if (!/^[0-9]$/.test(e.key)) return;    // only digits
+    const logicalPos = getLogicalPos(pos);
+    if (logicalPos < 4) {
+      rawDigits[logicalPos] = e.key;
+      updateDisplay();
+      setCursor(getVisualPos(logicalPos + 1));
+    }
+  });
+
+
+  // ─── NEW: Standard ‘input’ listener for MOBILE ───
+  input.addEventListener('input', () => {
+    // Whatever the user typed (e.g. "12.34"), parse it:
+    const val = parseFloat(input.value.trim());
+    if (!isNaN(val) && val > 0) {
+      updateBtn.disabled = false;
+      updateBtn.style.backgroundColor = '#000';
+      updateBtn.style.cursor = 'pointer';
+    } else {
+      updateBtn.disabled = true;
+      updateBtn.style.backgroundColor = '#ccc';
+      updateBtn.style.cursor = 'not-allowed';
+    }
+  });
+
+
+  // ─── Re-draw the masked value and enable/disable “Update” ───
+  function updateDisplay() {
+    input.value = rawDigits[0] + rawDigits[1] + '.' + rawDigits[2] + rawDigits[3];
+    const num = parseFloat(input.value);
+    if (num > 0) {
+      updateBtn.disabled = false;
+      updateBtn.style.backgroundColor = '#000';
+      updateBtn.style.cursor = 'pointer';
+    } else {
+      updateBtn.disabled = true;
+      updateBtn.style.backgroundColor = '#ccc';
+      updateBtn.style.cursor = 'not-allowed';
+    }
+  }
+
+  // ─── Before actually submitting, fill the hidden fields ───
+  const form      = document.querySelector('form');
+  const typeInput = document.getElementById('vehicle-type');
+  const priceInput = document.getElementById('vehicle-price');
+
+  form.addEventListener('submit', (e) => {
+    if (!selectedType) {
+      alert("❌ Please select a vehicle type before updating price.");
+      e.preventDefault();
+      return;
+    }
+    typeInput.value  = selectedType;
+    priceInput.value = input.value;
+    console.log("Form ready—type:", typeInput.value, "price:", priceInput.value);
+  });
+
+  // ─── Cursor Helpers (unchanged) ───
+  function getLogicalPos(visPos) { return visPos <= 1 ? visPos : visPos - 1; }
+  function getVisualPos(logPos)  { return logPos <= 1 ? logPos : logPos + 1; }
+  function setCursor(pos) {
+    requestAnimationFrame(() => {
+      input.setSelectionRange(pos, pos);
+    });
+  }
+</script>
+
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const sidebar = document.querySelector('.dashboard-sidebar');
+  const sidebarClose = document.querySelector('.sidebar-close');
+
+  // Open sidebar on menu button click
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.add('sidebar-open');
+  });
+
+  // Close sidebar on close button click
+  sidebarClose.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-open');
+  });
+</script>
+
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

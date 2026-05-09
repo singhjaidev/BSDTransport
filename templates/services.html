@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - BSD Transport</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/services.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+                        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}"> -->
+
+
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}"> -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<style>
+    .hero-section {
+    background: url("{{ url_for('static', filename='images/service-bg.png') }}") no-repeat center center;
+background-size: cover;
+}
+</style>
+<body>
+    <!-- Navigation Header -->
+   <header class="bsd-primary-navigation">
+    <div class="bsd-nav-container">
+        <!-- Logo Section -->
+        <div class="bsd-brand-section">
+            <a href="{{ url_for('index') }}" class="bsd-logo-text">
+                <span class="bsd-logo-white">BSD</span><span class="bsd-logo-blue">Transport</span>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="bsd-desktop-menu">
+            <ul class="bsd-nav-links">
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('index') }}" class="bsd-nav-link {% if request.endpoint == 'index' %}bsd-nav-active{% endif %}">Home</a>
+                </li>
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('about') }}" class="bsd-nav-link {% if request.endpoint == 'about' %}bsd-nav-active{% endif %}">About</a>
+                </li>
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('services') }}" class="bsd-nav-link {% if request.endpoint == 'services' %}bsd-nav-active{% endif %}">Services</a>
+                </li>
+                {% if session.get('name') %}
+                    <li class="bsd-nav-item dropdown-parent">
+                        <a href="javascript:void(0);" class="bsd-nav-link" onclick="toggleDropdown()">
+                            {{ session['name'][0]|upper }}
+                        </a>
+                        <div id="dropdownMenu" class="dropdown-content" style="display: none;">
+                            <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}">Dashboard</a>
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="bsd-nav-item">
+                        <a href="{{ url_for('login') }}" class="bsd-login-button">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="bsd-hamburger-btn" id="bsdHamburgerBtn" onclick="toggleMobileMenu()">
+            <span class="bsd-hamburger-line"></span>
+            <span class="bsd-hamburger-line"></span>
+            <span class="bsd-hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="bsd-mobile-menu" id="bsdMobileMenu">
+        <div class="bsd-mobile-menu-content">
+            <div class="bsd-mobile-nav-links">
+                <a href="{{ url_for('index') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'index' %}bsd-mobile-active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'about' %}bsd-mobile-active{% endif %}">About</a>
+                <a href="{{ url_for('services') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'services' %}bsd-mobile-active{% endif %}">Services</a>
+            </div>
+            <div class="bsd-mobile-divider"></div>
+            <div class="bsd-mobile-login-section">
+                {% if session.get('name') %}
+                    <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}" class="bsd-mobile-login-btn">Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="bsd-mobile-login-btn">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="bsd-mobile-login-btn">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <!-- <span class="hero-badge">OUR SERVICES</span> -->
+                <h1 class="hero-title">Premium Transportation Solutions</h1>
+                <p class="hero-subtitle">Professional, reliable, and comfortable transport services across Paris and beyond</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Core Services</h2>
+                <p class="section-subtitle">Experience excellence with our comprehensive range of transportation solutions</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3 class="service-title">Airport Transfers</h3>
+                    <p class="service-location">CDG, Orly, Beauvais</p>
+                    <p class="service-description">Specialists in transfers to and from all Paris airports. Real-time flight tracking, personalized meet & greet, punctuality guaranteed.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Real-time tracking</span>
+                        <span class="feature-tag">Meet & Greet</span>
+                        <span class="feature-tag">24/7 Available</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3 class="service-title">Long-Distance Rides</h3>
+                    <p class="service-location">Anywhere in France</p>
+                    <p class="service-description">Need to travel beyond Paris? Our professional drivers will take you anywhere in France with comfort and care.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Professional Drivers</span>
+                        <span class="feature-tag">Comfort Guaranteed</span>
+                        <span class="feature-tag">France-wide</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="service-title">Hourly Driver Service</h3>
+                    <p class="service-location">Chauffeur at disposal</p>
+                    <p class="service-description">Hire a private driver by the hour – ideal for business appointments or sightseeing days.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Flexible Hours</span>
+                        <span class="feature-tag">Business Ready</span>
+                        <span class="feature-tag">Sightseeing</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="service-title">Business / VIP Services</h3>
+                    <p class="service-location">Executive Transport</p>
+                    <p class="service-description">Discreet, premium transport for executives and VIP clients. Clean, elegant vehicles and professional care.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">VIP Treatment</span>
+                        <span class="feature-tag">Discreet Service</span>
+                        <span class="feature-tag">Premium Vehicles</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="service-title">Group Transfers</h3>
+                    <p class="service-location">Up to 6 passengers</p>
+                    <p class="service-description">Spacious vans perfect for families, tourist groups or corporate outings. Comfort and safety guaranteed.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Family Friendly</span>
+                        <span class="feature-tag">Corporate Groups</span>
+                        <span class="feature-tag">Safety First</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="service-title">Hotel & Business Transfers</h3>
+                    <p class="service-location">Custom Solutions</p>
+                    <p class="service-description">Custom solutions for partner hotels or companies – easy management and clear invoicing.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Partner Hotels</span>
+                        <span class="feature-tag">Corporate Solutions</span>
+                        <span class="feature-tag">Easy Billing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vehicle Types Section -->
+    <section class="vehicles-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Fleet</h2>
+                <p class="section-subtitle">Choose from our premium selection of vehicles</p>
+            </div>
+            
+            <div class="vehicles-grid">
+                <div class="vehicle-card" data-aos="fade-right">
+                    <div class="vehicle-image">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="vehicle-content">
+                        <h3 class="vehicle-title">Standard</h3>
+                        <p class="vehicle-capacity">4 seats</p>
+                        <p class="vehicle-description">Simple, reliable comfort – ideal for daily and short trips.</p>
+                        <div class="vehicle-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Air Conditioning</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>GPS Navigation</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Daily Cleaning</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vehicle-card featured" data-aos="fade-up">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="vehicle-image">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <div class="vehicle-content">
+                        <h3 class="vehicle-title">Berline</h3>
+                        <p class="vehicle-capacity">4 seats</p>
+                        <p class="vehicle-description">Mercedes E-Class, S-Class or similar – premium elegance for airport or business trips.</p>
+                        <div class="vehicle-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Luxury Interior</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Premium Sound</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Professional Service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vehicle-card" data-aos="fade-left">
+                    <div class="vehicle-image">
+                        <i class="fas fa-shuttle-van"></i>
+                    </div>
+                    <div class="vehicle-content">
+                        <h3 class="vehicle-title">Van</h3>
+                        <p class="vehicle-capacity">6 passengers</p>
+                        <p class="vehicle-description">Mercedes V-Class or similar – spacious and luxurious, ideal for groups or families with luggage.</p>
+                        <div class="vehicle-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Extra Luggage Space</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Group Seating</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Premium Comfort</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Areas Section -->
+    <section class="areas-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Service Areas</h2>
+                <p class="section-subtitle">Main tourist & transport zones we serve</p>
+            </div>
+            
+            <div class="areas-content">
+                <div class="areas-grid">
+                    <div class="area-category" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="category-title">
+                            <i class="fas fa-plane"></i>
+                            Airports
+                        </h3>
+                        <div class="area-list">
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Charles de Gaulle (CDG)</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Orly Airport</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Beauvais Airport</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="area-category" data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="category-title">
+                            <i class="fas fa-city"></i>
+                            Paris & Vicinity
+                        </h3>
+                        <div class="area-list">
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Central Paris</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Disneyland Paris</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Palace of Versailles</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="area-category" data-aos="fade-up" data-aos-delay="300">
+                        <h3 class="category-title">
+                            <i class="fas fa-landmark"></i>
+                            Tourist Attractions
+                        </h3>
+                        <div class="area-list">
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Fontainebleau Castle</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>La Vallée Village Outlet</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Parc Astérix</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="area-category" data-aos="fade-up" data-aos-delay="400">
+                        <h3 class="category-title">
+<i class="fas fa-wine-glass"></i>                            Cultural Sites
+                        </h3>
+                        <div class="area-list">
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Château de Chantilly</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Claude Monet's House</span>
+                            </div>
+                            <div class="area-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Champagne Region</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="special-destinations" data-aos="fade-up" data-aos-delay="500">
+                    <h4 class="special-title">Special Destinations</h4>
+                    <div class="special-items">
+                        <div class="special-item">
+                            <i class="fas fa-star"></i>
+                            <span>Mont-Saint-Michel (on request)</span>
+                        </div>
+                        <div class="special-item">
+                            <i class="fas fa-star"></i>
+                            <span>Other top tourist sites upon request</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <span class="cta-badge">READY TO EXPERIENCE BSD?</span>
+                <h2 class="cta-title">Book Your Premium Ride Today</h2>
+                <p class="cta-subtitle">Experience the difference with our premium transportation services</p>
+                <div class="cta-buttons">
+                    <a class="btn btn-primary">Book Now</a>
+                    <!-- <a class="btn btn-secondary">Get Quote</a> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+  <div class="footer__container">
+    <div class="footer__grid">
+      <!-- Company Info (spans 2 on lg) -->
+      <div class="footer__company footer__company--span2">
+        <div class="footer__logo">
+          BSD<span class="footer__logo--highlight">Transport</span>
+        </div>
+        <p class="footer__description">
+          Premium airport transfer service in Paris. We provide reliable, comfortable, and professional transportation solutions for travelers who value quality and punctuality.
+        </p>
+        <div class="footer__social">
+          <a href="#" class="footer__social-icon footer__social-icon--facebook" aria-label="Facebook">f</a>
+          <a href="#" class="footer__social-icon footer__social-icon--twitter"  aria-label="Twitter">t</a>
+          <a href="#" class="footer__social-icon footer__social-icon--linkedin" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer__section">
+        <h3 class="footer__title">Quick Links</h3>
+        <ul class="footer__list">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Airport Transfer</a></li>
+          <li><a href="#">City Tours</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Our Services -->
+      <div class="footer__section">
+        <h3 class="footer__title">Our Services</h3>
+        <ul class="footer__list">
+          <li><a href="#">Airport Transfers</a></li>
+          <li><a href="#">City Tours</a></li>
+          <li><a href="#">Business Travel</a></li>
+          <li><a href="#">Group Transportation</a></li>
+          <li><a href="#">Wedding Transport</a></li>
+          <li><a href="#">Hourly Rentals</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 BSD Transport. All rights reserved.</p>
+      <div class="footer__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+    <script src="{{ url_for('static', filename='js/services.js') }}"></script>
+</body>
+</html>

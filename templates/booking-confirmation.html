@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - CityRide Taxi Service</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <span class="logo-text">City<span class="highlight">Ride</span></span>
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="language-selector">
+                    <select id="language">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                    <a href="register.html" class="btn btn-primary">Register</a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Confirmation Section -->
+    <section class="confirmation-section">
+        <div class="container">
+            <div class="confirmation-container">
+                <div class="confirmation-header">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h1>Booking Confirmed!</h1>
+                    <p>Your ride has been successfully booked. We've sent a confirmation to your email.</p>
+                </div>
+                
+                <div class="booking-details">
+                    <div class="booking-id">
+                        <span>Booking ID:</span>
+                        <strong>CR-12345678</strong>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Ride Details</h3>
+                        <div class="detail-group">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <div>
+                                    <span class="label">Date</span>
+                                    <span class="value">May 16, 2023</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <span class="label">Time</span>
+                                    <span class="value">2:30 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="route-info">
+                            <div class="route-point pickup">
+                                <div class="point-marker">
+                                    <i class="fas fa-circle"></i>
+                                </div>
+                                <div class="point-details">
+                                    <span class="point-type">Pickup</span>
+                                    <span class="point-address">123 Main Street, New York, NY</span>
+                                </div>
+                            </div>
+                            <div class="route-line"></div>
+                            <div class="route-point dropoff">
+                                <div class="point-marker">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="point-details">
+                                    <span class="point-type">Drop-off</span>
+                                    <span class="point-address">456 Park Avenue, New York, NY</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Vehicle & Driver</h3>
+                        <div class="vehicle-driver-info">
+                            <div class="vehicle-info">
+                                <div class="vehicle-image">
+<img src="{{ url_for('static', filename='images/standard-car.jpg') }}" alt="Standard Vehicle">
+                                </div>
+                                <div class="vehicle-details">
+                                    <h4>Standard</h4>
+                                    <p>Toyota Camry</p>
+                                    <p>License: ABC-1234</p>
+                                </div>
+                            </div>
+                            <div class="driver-info">
+                                <div class="driver-image">
+<img src="{{ url_for('static', filename='images/driver-avatar.jpg') }}" alt="Driver">
+                                </div>
+                                <div class="driver-details">
+                                    <h4>Michael Johnson</h4>
+                                    <div class="driver-rating">
+                                        <i class="fas fa-star"></i>
+                                        <span>4.8</span> (245 rides)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Fare Summary</h3>
+                        <div class="fare-details">
+                            <div class="fare-item">
+                                <span class="fare-label">Base fare</span>
+                                <span class="fare-value">$15.00</span>
+                            </div>
+                            <div class="fare-item">
+                                <span class="fare-label">Distance (5.2 miles)</span>
+                                <span class="fare-value">$13.00</span>
+                            </div>
+                            <div class="fare-item">
+                                <span class="fare-label">Time (20 min)</span>
+                                <span class="fare-value">$5.00</span>
+                            </div>
+                            <div class="fare-item">
+                                <span class="fare-label">Booking fee</span>
+                                <span class="fare-value">$2.50</span>
+                            </div>
+                            <div class="fare-item discount">
+                                <span class="fare-label">Promo code: WELCOME20</span>
+                                <span class="fare-value">-$7.10</span>
+                            </div>
+                            <div class="fare-item total">
+                                <span class="fare-label">Total</span>
+                                <span class="fare-value">$28.40</span>
+                            </div>
+                        </div>
+                        <div class="payment-method">
+                            <span class="payment-label">Payment Method:</span>
+                            <span class="payment-value">
+                                <i class="fab fa-cc-visa"></i> Visa ending in 4567
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="confirmation-actions">
+                    <button id="addToCalendar" class="btn btn-outline">
+                        <i class="fas fa-calendar-plus"></i> Add to Calendar
+                    </button>
+                    <button id="printConfirmation" class="btn btn-outline">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <a href="user-dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Go to Dashboard
+                    </a>
+                </div>
+                
+                <div class="cancellation-policy">
+                    <h4><i class="fas fa-info-circle"></i> Cancellation Policy</h4>
+                    <p>Free cancellation up to 1 hour before pickup. A fee of $5 applies for cancellations less than 1 hour before pickup.</p>
+                </div>
+                
+                <div class="need-help">
+                    <p>Need help with your booking? <a href="contact.html">Contact our support team</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <span class="logo-text">City<span class="highlight">Ride</span></span>
+                    </div>
+                    <p class="footer-description">Premium taxi service providing safe, reliable, and comfortable transportation for all your needs.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="fleet.html">Our Fleet</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">City Transfers</a></li>
+                        <li><a href="#">Airport Transfers</a></li>
+                        <li><a href="#">Business Travel</a></li>
+                        <li><a href="#">Event Transportation</a></li>
+                        <li><a href="#">24/7 Taxi Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to receive updates and special offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2023 CityRide. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+</body>
+</html>

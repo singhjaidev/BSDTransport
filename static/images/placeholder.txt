@@ -1,0 +1,35 @@
+This file serves as a placeholder for the images directory.
+
+The following images are needed for the complete website:
+
+1. Vehicle images:
+   - economy-car.jpg
+   - standard-car.jpg
+   - suv-car.jpg
+   - luxury-car.jpg
+   - luxury-suv.jpg
+   - minivan.jpg
+   - accessible-van.jpg
+   - premium-sedan.jpg
+
+2. User and Driver avatars:
+   - user-avatar.jpg
+   - driver-avatar.jpg
+   - admin-avatar.jpg
+   - driver-avatar-small.jpg (and numbers 2-5)
+   - user-avatar-small.jpg (and numbers 2-5)
+   - testimonial-1.jpg (and numbers 2-3)
+   - team-1.jpg (and numbers 2-4)
+
+3. UI elements:
+   - hero-bg.jpg
+   - app-mockup.png
+   - ride-map.jpg
+   - login-image.jpg
+   - register-image.jpg
+   - about-image.jpg
+   - cta-bg.jpg
+   - airport-transfer.jpg
+   - business-service.jpg
+
+To complete the website, replace this placeholder file with actual images. You can use free stock photos from Unsplash, Pexels, or similar services.

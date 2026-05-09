@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Flatpickr Time Picker -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+<!-- add somewhere in <head> or before closing </body> -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css"/>
+
+
+  <!-- Custom CSS (Flask-compatible) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ride-booking.css') }}">
+</head>
+<body data-logged-in="{{ 'true' if session.get('user_type')=='user' else 'false' }}">
+  <div id="bookingData"
+     data-booking-id="{{ booking.id }}"
+     data-pickup="{{ booking.pickup }}"
+     data-dropoff="{{ booking.dropoff }}"
+     data-return="{{ booking.return_trip }}">
+</div>
+
+<input type="hidden" id="selectedTripType" value="{{ booking.trip_type }}">
+
+
+  <div class="page-container">
+    <div class="page-heading">
+      <h1>Seamless Transfers, Exceptional Comfort</h1>
+      <p>Reserve your private ride between any two locations — quick, safe, and stress-free.</p>
+    </div>
+
+    <div class="booking-form-container">
+      <form class="booking-form">
+
+        <!-- TOP BAR -->
+        <div class="form-tabs">
+          <button type="button" class="tab-btn active">Standard</button>
+          <button type="button" class="tab-btn">Airport</button>
+        </div>
+
+        <!-- GAP + BACK BUTTON -->
+        <div class="form-toolbar">
+          <button id="backToBooking" class="back-btn">Back to Booking</button>
+        </div>
+
+        <!-- SPLIT CONTENT -->
+        <div class="form-split">
+          <!-- Left: Ride Info Display with Scroll -->
+          <div class="form-left">
+            <div class="left-content-scroll">
+              <div class="ride-summary">
+                <div class="ride-metrics">
+                  <span class="distance" id="distance">— km</span>
+                  <span class="separator">•</span>
+                  <span class="duration" id="duration">— minutes</span>
+                </div>
+
+                {% if booking %}
+                <div class="ride-details-grid">
+                  <div><strong>From:</strong> {{ booking.pickup }}</div>
+                  <div><strong>To:</strong> {{ booking.dropoff }}</div>
+                  <div><strong>Date:</strong> {{ booking.ride_date }}</div>
+                  <div>
+                    <strong>Time:</strong>
+                    {{ "%02d"|format(booking.hour) }}:{{ "%02d"|format(booking.minute) }}
+                  </div>
+                  <div><strong>Passengers:</strong> {{ booking.passengers }}</div>
+                  {% if booking.return_trip %}
+                    <div><strong>Return Date:</strong> {{ booking.return_date }}</div>
+                    <div><strong>Return Time:</strong> {{ booking.return_time }}</div>
+                  {% endif %}
+                </div>
+
+                {% else %}
+                <p style="color: red;"><strong>❌ Booking not found. Please go back and submit the form again.</strong></p>
+                {% endif %}
+              </div>
+<div class="bawanjooor">
+              <!-- ○─ Vehicle-selection container (shown to logged-in) ─○ -->
+              <div id="selectionContainer">
+                <!-- <h3 class="choose-heading">Choose a vehicle</h3> -->
+                <div class="vehicle-cards">
+                  <div class="vehicle-card" onclick="selectVehicle(this)">
+                    <div class="">
+
+                      <h4>Standard</h4>
+                      <p class="price">–</p>
+                      <i class="fas fa-car-side"></i>
+                    </div>
+                  </div>
+                  <div class="vehicle-card" onclick="selectVehicle(this)"><div class="">
+                    <h4>Business</h4>
+                    <p class="price">–</p>
+                    <i class="fas fa-taxi"></i></div>
+                  </div>
+                  <div class="vehicle-card" onclick="selectVehicle(this)"><div class="">
+                    <h4>Van</h4>
+                    <p class="price">–</p>
+                    <i class="fas fa-shuttle-van"></i></div>
+                  </div>
+                </div>
+                <input type="hidden" id="selectedVehicleType">
+                <input type="hidden" id="selectedPrice">
+              </div>
+
+              <!-- ○─ Guest login form (hidden until needed) ─○ -->
+
+<!-- ○─ Guest login form (hidden until needed) ─○ -->
+<div id="guestLoginForm" style="display:none;">
+  <div class="guest-form-container">
+
+    <!-- ───── Tiny two‐step progress bar ───── -->
+    <div class="guest-progress">
+      <div id="guestProgress" class="guest-progress-fill"></div>
+    </div>
+
+    <!-- ───── Step 1: name / email / phone → Get OTP ───── -->
+    <div id="guestStep1">
+      <h3 class="guest-form-title">Please provide your details to continue</h3>
+      <div class="guest-form-field">
+        <label for="guestName">Full Name</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user input-icon"></i>
+          <input type="text" id="guestName" placeholder="Enter your full name" required>
+        </div>
+      </div>
+      <div class="guest-form-field">
+        <label for="guestEmail">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" id="guestEmail" placeholder="Enter your email" required>
+        </div>
+      </div>
+      <div class="guest-form-field">
+        <!-- phone + Get OTP in one row -->
+        <div class="phone-field-container">
+          <div class="phone-input-wrapper">
+            <div class="phone-wrapper">
+              <input type="tel" id="guestPhone" placeholder="Enter your phone number" required>
+            </div>
+          </div>
+          <button type="button" id="guestGetOtpBtn" class="guest-btn primary phone-otp-btn">
+            <i class="fas fa-paper-plane"></i>
+            Get OTP
+          </button>
+        </div>
+      </div>
+      <div id="guestErrorMsgStep1" class="error-message"></div>
+    </div>
+
+    <!-- ───── Step 2: “OTP sent to … Want to change number?” + Verify OTP ───── -->
+    <div id="guestStep2" style="display:none;">
+      <h3 class="guest-form-title">Verification</h3>
+      <p style="font-size:0.75rem; text-align:center; margin-bottom:0.5rem;">
+        OTP sent to <span id="guestPhoneDisplay" style="font-weight:600;"></span>.
+        <button type="button" id="guestChangeNumber" style="background:none; border:none; color:#1d4ed8; font-size:0.75rem; cursor:pointer; padding:0;">
+          Change Number
+        </button>
+      </p>
+      <div id="guestOtpGroup" class="otp-group">
+        <div class="guest-form-field">
+          <label for="guestOtp">Verification Code</label>
+          <div class="input-wrapper">
+            <i class="fas fa-key input-icon"></i>
+            <input type="text" id="guestOtp" placeholder="Enter 6-digit OTP" required maxlength="6">
+          </div>
+        </div>
+        <button type="button" id="guestVerifyBtn" class="guest-btn secondary">
+          <i class="fas fa-shield-alt"></i>
+          Verify OTP
+        </button>
+      </div>
+      <div id="guestErrorMsgStep2" class="error-message"></div>
+    </div>
+
+    <!-- ───── After OTP is verified ───── -->
+    <div id="guestSuccessMsg" class="success-message" style="display:none;">
+      <i class="fas fa-check-circle"></i>
+      Phone number verified successfully!
+    </div>
+    <div id="guestSuccessMsg2" class="success-message" style="display:none;">
+      <i class="fas fa-check-circle"></i>
+      Redirecting to payment page...
+    </div>
+
+  </div>
+</div>
+
+
+
+
+              <!-- Confirm Ride always present, but disabled until ready -->
+              <div class="confirm-btn-container">
+                  <button type="button" id="confirmRideBtn" class="confirm-btn" disabled>Confirm Ride</button>
+              </div>
+           </div>
+           
+           
+            </div>
+          </div>
+
+          <!-- Right: Map -->
+          <div class="form-right">
+            <div class="map-container">
+              <div id="map" class="map-box"></div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+ 
+
+ <!-- Flatpickr JS (must be before your script that uses it) -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Stripe JS (optional but okay early) -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- Pass prices into JS -->
+<script>
+  const pricesFromDB = JSON.parse('{{ price_map|tojson|safe }}');
+</script>
+<script>
+    const MAPBOX_TOKEN = "{{ mapbox_token }}";
+</script>
+<!-- ✅ Your logic (defines flatpickr usage + window.initMap) -->
+<script src="{{ url_for('static', filename='js/ride-booking.js') }}"></script>
+
+<!-- ✅ Google Maps API (defer only, no async) -->
+<script defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvUnC2VsupX9cadbHkDNxXHWT5H8r_DAc&callback=initMap">
+</script>
+
+  <!-- Custom JS (Flask-compatible) -->
+
+  <!-- Map init -->
+   
+  
+
+  
+</body>
+</html>

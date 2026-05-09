@@ -1,0 +1,1157 @@
+.hero {
+  position: relative;
+  /* your existing gradient + image */
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)
+    ),
+    url('../images/hero-bg.jpg') center/cover no-repeat;
+
+  /* FIXED height so it never grows */
+  height: 700px;
+  /* allow the form to overflow below */
+  overflow: visible;
+  /* keep the image locked to the viewport */
+  background-attachment: fixed;
+
+  /* keep centering your content vertically */
+  display: flex;
+  align-items: center;
+  padding: 6rem 0;
+  color: white;
+  margin-top: 80px;
+}
+
+
+.hero .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 550px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Clean Booking Form Design */
+.booking-form-container {
+  flex: 1;
+  max-width: 400px;
+  min-width: 0;               /* ← allow it to shrink below its content width */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  overflow: visible !important;
+}
+
+
+.booking-form {
+    width: 100%;
+}
+
+/* Form Tabs */
+.form-tabs {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: relative;
+    color: #555;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+    color: #000;
+    border-bottom: 2px solid #000;
+    font-weight: 600;
+}
+
+/* Form Body */
+.form-body {
+    padding: 1.5rem;
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #f5f5f5;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #aaa;
+    background-color: #fff;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Return Button */
+.return-trip-btn {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background-color: white;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.return-trip-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.return-trip-btn.active {
+    background-color: #000;
+    color: white;
+}
+
+/* Passengers Row */
+.passengers-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.passengers-row label {
+    font-weight: 500;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.passengers-control {
+    display: flex;
+    align-items: center;
+}
+
+.passenger-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.passenger-btn:hover {
+    background-color: #f5f5f5;
+}
+
+#passengerCount {
+    margin: 0 1rem;
+    font-weight: 600;
+    width: 20px;
+    text-align: center;
+}
+
+/* Form Footer */
+.search-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.search-btn:hover {
+    opacity: 0.9;
+}
+
+/* Vehicle Categories */
+.vehicle-categories {
+    padding: 5rem 0;
+    background-color: var(--background-light);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.category-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-image {
+    height: 180px;
+    overflow: hidden;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-speed);
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.05);
+}
+
+.category-info {
+    padding: 1.5rem;
+}
+
+.category-info h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.category-info p {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.features li {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+}
+
+.features li i {
+    margin-right: 0.35rem;
+    color: var(--primary-color);
+}
+
+/* Why Choose Us */
+.why-choose-us {
+    padding: 5rem 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--background-light);
+    border-radius: var(--border-radius);
+    transition: transform var(--transition-speed);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--text-light);
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 5rem 0;
+    background-color: #eee;
+}
+
+.testimonial-slider {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.testimonial-slides {
+    overflow: hidden;
+}
+
+.testimonial-slide {
+    display: none;
+}
+
+.testimonial-slide.active {
+    display: block;
+}
+
+.testimonial-content {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(128, 128, 128, 0.1) !important;    position: relative;
+    margin: 2rem;
+
+}
+
+.quote-icon {
+    color: var(--primary-color);
+    font-size: 2rem;
+    opacity: 0.2;
+    margin-bottom: 1rem;
+}
+
+.testimonial-content p {
+    font-style: italic;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+.rating {
+    color: var(--primary-color);
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.author-info h4 {
+    margin-bottom: 0.25rem;
+}
+
+.author-info p {
+    color: var(--text-light);
+    margin-bottom: 0;
+    font-size: 0.875rem;
+}
+
+.testimonial-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.control-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+}
+
+.testimonial-indicators {
+    display: flex;
+    margin: 0 1rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    margin: 0 0.25rem;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+}
+
+.indicator.active {
+    background-color: var(--primary-color);
+}
+
+/* App Download */
+.app-download {
+    padding: 5rem 0;
+}
+
+.app-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem;
+    color: var(--secondary-color);
+}
+
+.app-info {
+    flex: 1;
+}
+
+.app-info h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.app-info p {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+}
+
+.app-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.app-btn {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: transform var(--transition-speed);
+}
+
+.app-btn:hover {
+    transform: translateY(-3px);
+    color: white;
+}
+
+.app-btn i {
+    font-size: 2rem;
+    margin-right: 0.75rem;
+}
+
+.app-btn-text span {
+    display: block;
+    font-size: 0.75rem;
+}
+
+.app-btn-text strong {
+    font-size: 1.125rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.app-image {
+    flex: 1;
+    text-align: center;
+}
+
+.app-image img {
+    max-height: 500px;
+    margin: 0 auto;
+}
+
+/* Contact Info */
+.contact-info {
+    padding: 5rem 0;
+    background-color: var(--background-light);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.contact-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed);
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+}
+
+.contact-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.contact-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.contact-card p {
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.contact-card a {
+    color: var(--secondary-color);
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.contact-card a:hover {
+    color: var(--primary-color);
+}
+
+.contact-cta {
+    text-align: center;
+}
+
+.contact-cta p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .hero {
+        padding: 4rem 0;
+    }
+    
+    .hero .container {
+        flex-direction: column;
+    }
+    
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+    }
+    
+    .booking-form-container {
+        max-width: 100%;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .app-content {
+        flex-direction: column;
+        padding: 2rem;
+    }
+    
+    .app-info {
+        text-align: center;
+    }
+    
+    .app-buttons {
+        justify-content: center;
+    }
+}
+.flatpickr-calendar {
+  /* ensure the calendar is underneath the fixed header (which is z-index:1000) */
+  z-index: 500 !important;
+}
+@media (max-width: 767px) {    
+    .features-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .contact-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .app-image img {
+        max-height: 300px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .two-cols {
+        grid-template-columns: 1fr;
+    }
+    
+    .app-buttons {
+        flex-direction: column;
+    }
+    
+    .hero {
+        min-height: 450px;
+    }
+}
+#passengerCount {
+  color: #000; /* black text */
+}
+/* input:invalid {
+  border: 2px solid red;
+}
+input:valid {
+  border: 2px solid green;
+} */
+
+.form-row.two-cols {
+    display: flex;
+    gap: 1rem; /* space between hour and minute */
+}
+
+.form-row.two-cols .form-group {
+    flex: 1;  /* Each takes 50% of the row */
+}
+.profile-menu {
+  position: relative;
+  margin-left: 20px;
+}
+
+.profile-circle {
+  width: 40px;
+  height: 40px;
+  background-color: #ffc107;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 120px;
+  z-index: 99;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.hero {
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg') center/cover no-repeat;
+    padding: 6rem 0;
+    color: white;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    margin-top: 80px;
+}
+
+.hero .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 550px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+    /* margin-top: 12rem; */
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    color: white;
+}
+
+/* Clean Booking Form Design - Keep Original */
+.booking-form-container {
+    flex: 1;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.booking-form {
+    width: 100%;
+}
+
+/* Form Tabs */
+.form-tabs {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: relative;
+    color: #555;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+    color: #000;
+    border-bottom: 2px solid #3b82f6;
+    font-weight: 600;
+}
+
+/* Form Body */
+.form-body {
+    padding: 1.5rem;
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #f5f5f5;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #aaa;
+    background-color: #fff;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Return Button */
+.return-trip-btn {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background-color: white;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.return-trip-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.return-trip-btn.active {
+    background-color: #000;
+    color: white;
+}
+
+.remove-return-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Passengers Row */
+.passengers-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.passengers-row label {
+    font-weight: 500;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.passengers-control {
+    display: flex;
+    align-items: center;
+}
+
+.passenger-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.passenger-btn:hover {
+    background-color: #f5f5f5;
+}
+
+#passengerCount {
+    margin: 0 1rem;
+    font-weight: 600;
+    width: 20px;
+    text-align: center;
+    color: #000;
+}
+
+/* Form Footer */
+.search-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.search-btn:hover {
+    opacity: 0.9;
+}
+
+.form-row.two-cols {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row.two-cols .form-group {
+    flex: 1;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .hero {
+        padding: 4rem 0;
+        margin-top: 70px;
+    }
+    
+    .hero .container {
+        flex-direction: column;
+        margin-top: 11rem;
+    }
+    
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+    }
+    
+    .booking-form-container {
+        max-width: 100%;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.0rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .hero {
+        min-height: 450px;
+    }
+}
+
+@media (max-width: 575px) {
+    .two-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+.about-section .about-block {
+  display: flex !important;
+  align-items: center !important;
+  gap: 2rem !important;
+  margin-bottom: 2.5rem !important;
+}
+
+.about-section .about-block.reverse {
+  flex-direction: row-reverse !important;
+}
+
+.about-section .about-block .about-image,
+.about-section .about-block .about-content {
+  flex: 1 !important;
+}
+
+.about-section .about-block .about-image img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+@media (max-width: 767px) {
+  .about-section .about-block {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+    .about-section .about-block.reverse {
+    flex-direction: column-reverse !important;
+  }
+}
+/* Default: 15-inch laptop */
+.flatpickr-calendar {
+  font-size: 35px;
+  transform: scale(1);
+  width: 310px !important;
+  min-width: 310px !important;
+}
+
+/* Uniform Flatpickr styling for both date pickers */
+/* 1. Ensure the return container is the positioning context */
+#returnContainer {
+  position: relative;
+}
+
+/* 2. Restyle and reposition the close button */
+#returnContainer .remove-return-btn {
+  background-color: #000 !important;   /* black background */
+  color: #fff !important;              /* white × */
+  top: 10px !important;
+  right: -8px !important;
+  font-size: 14px !important;          /* smaller × */
+  padding: 4px 8px !important;         /* tighter padding */
+  line-height: 1 !important;
+  border-radius: 4px !important;       /* optional rounded look */
+}
+.time-save-btn {
+  /* full-width minus 16px total side margin */
+  width: calc(100% - 16px);
+  margin: 8px;
+  padding: 6px 0;
+  border-radius: 4px;   /* tighter corners */
+  font-size: 14px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.time-save-btn:hover {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+}
+/* 1) Stop the booking box from hiding overflow */
+.booking-form-container {
+  overflow: visible !important;
+}
+
+/* 2) Make the dropdown wrapper allow overflow & position relative */
+.time-dropdown-container {
+  position: relative;
+  overflow: visible !important;
+}
+
+/* 3) Pin the actual dropdown absolutely, so it floats free */
+.time-dropdowns {
+  position: absolute !important;
+  top: calc(100% + 4px) !important; /* just below the input */
+  left: 0 !important;
+  z-index: 1000 !important;
+  overflow: visible !important;
+}
+/* ——— Prevent Layout Shift on Desktop ——— */
+@media (min-width: 992px) {
+  .booking-form-container {
+    /* lock it at 400px so inner toggles don’t push sibling content */
+    flex: 0 0 400px !important;
+    width: 400px !important;
+  }
+}
+
+/* ——— Restore Responsiveness Below 992px ——— */
+@media (max-width: 991px) {
+  .booking-form-container {
+    flex: 1 !important;           /* grow/shrink normally */
+    width: auto !important;       /* fill available space */
+    max-width: 100% !important;   /* don’t exceed viewport */
+    min-width: 0 !important;      /* allow it to shrink below content size */
+  }
+}
+.time-dropdowns {
+  z-index: 10 !important;
+}
+#returnTimeDropdowns {
+  z-index: 10 !important;
+}
+.how-it-inner {
+  background-color: #fff !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+}
+
+@media (max-width: 481px) {
+  /* show two features per row instead of one */
+  .services-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+    max-width: 100% !important;
+  }
+}/* hide that little placeholder icon overlay */
+.transfer-image::before,
+.services-image::before,
+.hero-image::before {
+  display: none !important;
+}
+.airport-image .image-placeholder .fa-image {
+  display: none !important;
+}

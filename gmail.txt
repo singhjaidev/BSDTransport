@@ -1,0 +1,1566 @@
+id: transportbsd307@gmail.com
+thetransport1000
+
+appname: bsdapp
+app pw: sznn fcpp pjzg wbad
+
+
+
+
+
+
+i need few changes in this index.html. what you have to do is only focus on the things i said, and no other thing should be changed, all the updates are to be done in top ride booking form only, nothing else wehre.
+1. in the form, there are placeholders for hour and min. those placeholders are bigger then other palceholders, i want all the placeholders to be of eequal siize, so make all other placeholders from pickup placeholder to last placeholder that is return, make all them bigger, that is equal to the time  and hour.
+2. combine both hour and min placeholder to one, there will be one placeholder of time, when clicked, it should open 2 dropdown together, one for hour from 0to 23, and one for min from 0 to 60, with 5 min gap. the current dropdwon for hour and min are good, amke the design like that only, dont  chnage the design, they should look modern. dont do backend, i will do the backend on my own
+3. for date placeholder, it is opening a calender on clicking, i done need anything else changed, just make the calender look modern, it looks very simple for now. i need it modern look. just nothing else
+4.when the return button is pressed, it the place of button the 2 field comes return date and return time. i want return date and return time to be same design as you will design the normal date and time, just make sure the design should be very modern and good looking, and there is a cross button for removing the return. the design of return button is not very good, make it black color, and its placement should be exactly on the right top of return time placeholder. 
+
+now see i need these changes only, no other design, no other functioknality, no backend thing, no flask syntax, or any file name should be changeed, only and only change is that what i have said, nothing else should be changed, neither the design of other things should be changed, only do what i said. and i will do backend for hour and time which will be combined, rest all functions should work as they are. they should not be changed, take this script and do the edits
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSD - Premium Taxi Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvUnC2VsupX9cadbHkDNxXHWT5H8r_DAc&libraries=places&callback=initMap"
+  async defer
+></script>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+</head>
+<body data-logged-in="{{ 'true' if name else 'false' }}">       <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                <a href="{{ url_for('index') }}" class="logo-text">
+                    BSD<span class="highlight">Transport</span>
+                </a>
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                   
+                </ul>
+                
+                {% if session.get('name') %}
+<!-- ✅ Logged-in view -->
+<div class="profile-menu">
+    <div class="profile-circle" onclick="toggleDropdown()">
+        {{ session['name'][0]|upper }}
+    </div>
+    <div id="dropdownMenu" class="dropdown-content" style="display: none;">
+        <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+{% else %}
+<!-- ❌ Not logged-in view -->
+<div class="auth-buttons">
+    <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+    <!-- <a href="{{ url_for('register') }}" class="btn btn-primary">Register</a> -->
+</div>
+{% endif %}
+
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Your Reliable Ride, <br>Anytime, Anywhere</h1>
+            <p>Premium taxi service with professional drivers at competitive rates</p>
+        </div>
+        <div class="booking-form-container">
+<form id="bookingForm" class="booking-form" method="POST" action="/ride-booking">
+                <div class="form-tabs">
+                    <button type="button" class="tab-btn active" data-tab="standard">Standard</button>
+                    <button type="button" class="tab-btn" data-tab="airport">Airport</button>
+                </div>
+                <input type="hidden" id="trip_type" name="trip_type" value="standard">
+
+                
+                <div class="form-body">
+                    <div class="form-row">
+                        <div class="form-group">
+<label for="pickup"><i class="fas fa-map-marker-alt" ></i>     Pickup</label>
+
+                            <input type="text" id="pickup" name="pickup" placeholder="Enter Pickup Address" required>
+                            <input type="hidden" id="pickup_valid" name="pickup_valid" value="0">
+
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dropoff"><i class="fas fa-map-marker-alt" ></i>     Destination</label>
+                            <input type="text" id="dropoff" name="dropoff" placeholder="Enter Destination Address" required>
+                            <input type="hidden" id="dropoff_valid" name="dropoff_valid" value="0">
+
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-cols">
+                        <div class="form-group">
+                            <label for="date">
+  <i class="fas fa-calendar-alt"></i>     Date
+</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+    <label for="hour"><i class="fas fa-clock"></i>     Hour</label>
+<div class="custom-dropdown" id="hourDropdown">
+  <div class="selected" id="selectedHour">Select</div>
+  <div class="options" id="hourOptions">
+    {% for h in range(0, 24) %}
+    <div class="option" data-value="{{ h }}">{{ '%02d' % h }}</div>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="hour" id="hourInput" required>
+</div>
+
+</div>
+
+<div class="form-group">
+    <label for="minute"><i class="fas fa-clock"></i>     Minute</label>
+<div class="custom-dropdown" id="minuteDropdown">
+  <div class="selected" id="selectedMinute">Select</div>
+  <div class="options" id="minuteOptions">
+    {% for m in range(0, 60) %}
+    <div class="option" data-value="{{ m }}">{{ '%02d' % m }}</div>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="minute" id="minuteInput" required>
+</div>
+
+</div>
+
+
+                    </div>
+                    
+                    <div class="form-row" id="airportFields" style="display: none;">
+                        
+                    </div>
+                    
+                    <div class="form-row" style="position: relative;">
+  <div id="returnContainer"></div>
+  <input type="hidden" id="return_trip" name="return_trip" value="0">
+</div>
+
+
+                    
+                    <div class="form-row passengers-row">
+                        <label>Passagers</label>
+                        <div class="passengers-control">
+                            <button type="button" class="passenger-btn minus-btn">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span id="passengerCount">2</span>
+                            <input type="hidden" id="passengers" name="passengers" value="2">
+                            <button type="button" class="passenger-btn plus-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-footer">
+                       <button type="button" class="search-btn" id="submitBtn">
+    Book Now!
+</button>
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+    <!-- About Section -->
+    <section class="about-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>About BSD Transport</h2>
+      <p>Leading the way in premium transportation services</p>
+    </div>
+
+    <!-- First About Block - Image Left, Text Right -->
+<!-- First About Block - Image Left, Text Right -->
+<div class="about-block" style="margin-bottom: 5rem;">
+
+      <div class="about-image">
+        <img src="{{ url_for('static', filename='images/about-excellence.jpg') }}" alt="Professional taxi service">
+      </div>
+      <div class="about-content">
+        <h3>Excellence in Every Journey</h3>
+        <p>With over a decade of experience in premium transportation, BSD has established itself as the most trusted taxi service in the city. We pride ourselves on delivering exceptional service that goes beyond just getting you from point A to point B.</p>
+        <p>Our commitment to excellence is reflected in every aspect of our service - from our meticulously maintained fleet to our professionally trained drivers who understand the importance of punctuality, safety, and customer satisfaction.</p>
+        <ul class="about-features">
+          <li><i class="fas fa-check"></i> 10+ years of trusted service</li>
+          <li><i class="fas fa-check"></i> 500+ professional drivers</li>
+          <li><i class="fas fa-check"></i> 50,000+ satisfied customers</li>
+          <li><i class="fas fa-check"></i> 24/7 availability</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Second About Block - Text Left, Image Right -->
+    <div class="about-block reverse">
+      <div class="about-image">
+        <img src="{{ url_for('static', filename='images/about-technology.jpg') }}" alt="Modern technology">
+      </div>
+      <div class="about-content">
+        <h3>Innovation Meets Tradition</h3>
+        <p>We seamlessly blend traditional hospitality with cutting-edge technology to provide you with the most convenient and reliable transportation experience. Our advanced booking system, real-time tracking, and digital payment options make your journey smoother than ever.</p>
+        <p>Every vehicle in our fleet is equipped with state-of-the-art GPS navigation, ensuring optimal routes and minimal travel time. Our drivers receive continuous training on both customer service excellence and the latest safety protocols.</p>
+        <ul class="about-features">
+          <li><i class="fas fa-check"></i> Real-time GPS tracking</li>
+          <li><i class="fas fa-check"></i> Advanced booking system</li>
+          <li><i class="fas fa-check"></i> Multiple payment options</li>
+          <li><i class="fas fa-check"></i> Premium vehicle maintenance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose BSD Transport</h2>
+                <p>Experience the difference with our premium service</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Punctual Service</h3>
+                    <p>Our drivers always arrive on time, ensuring you reach your destination without delays</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safety First</h3>
+                    <p>All our vehicles undergo regular maintenance checks and our drivers are thoroughly vetted</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3>Competitive Rates</h3>
+                    <p>Enjoy premium service at affordable prices with transparent fare calculations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Our customer service team is available round the clock to assist you with any inquiries</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Optimized Routes</h3>
+                    <p>We use advanced GPS technology to choose the fastest routes avoiding traffic</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <h3>Professional Drivers</h3>
+                    <p>Our drivers are professional, courteous, and committed to providing excellent service</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Trusted by thousands of satisfied passengers</p>
+            </div>
+            <div class="testimonial-slider">
+                <div class="testimonial-slides">
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"BSD has been my go-to taxi service for the past year. Their drivers are always punctual, professional, and friendly. The booking process is straightforward and the cars are always clean and comfortable."</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-author">
+                                <!-- <img src="{{ url_for('static', filename='images/testimonial-1.jpg') }}" alt="Sarah Johnson"> -->
+                                <div class="author-info">
+                                    <h4>Sarah Johnson</h4>
+                                    <p>Regular Customer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"I've used BSD Transport for both business and personal travel, and they never disappoint. The option to schedule rides in advance is particularly useful for my airport transfers. Their luxury vehicles are immaculate and truly comfortable."</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-author">
+                                <!-- <img src="{{ url_for('static', filename='images/testimonial-2.jpg') }}" alt="Michael Robinson"> -->
+                                <div class="author-info">
+                                    <h4>Michael Robinson</h4>
+                                    <p>Business Traveler</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"As a visitor to the city, I was impressed by the knowledge and helpfulness of my BSD driver. He suggested some great local spots and took the most efficient route to my destinations. The fare was very reasonable too!"</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-info">
+                                    <h4>Emily Chen</h4>
+                                    <p>Tourist</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-controls">
+                    <button class="control-btn prev" aria-label="Previous testimonial">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="testimonial-indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
+                    </div>
+                    <button class="control-btn next" aria-label="Next testimonial">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-info">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contact Us</h2>
+                <p>We're here to help with your transportation needs</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3>Phone</h3>
+                    <p>24/7 Customer Support</p>
+                    <a href="tel:+18001234567">+1 (800) 123-4567</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <p>Send us your inquiries</p>
+                    <a href="mailto:info@ride.com">info@cityride.com</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Office</h3>
+                    <p>Visit our main office</p>
+                    <address>123 Taxi Street, Downtown<br>New York, NY 10001</address>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Working Hours</h3>
+                    <p>We operate 24/7</p>
+                    <span>Booking & Support Available Anytime</span>
+                </div>
+            </div>
+          
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <span class="logo-text">BSD Transport<span class="highlight"></span></span>
+                    </div>
+                    <p class="footer-description">Premium taxi service providing safe, reliable, and comfortable transportation for all your needs.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">City Transfers</a></li>
+                        <li><a href="#">Airport Transfers</a></li>
+                        <li><a href="#">Business Travel</a></li>
+                        <li><a href="#">Event Transportation</a></li>
+                        <li><a href="#">24/7 Taxi Service</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 BSD Transport. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+                    <a href="{{ url_for('terms') }}">Terms of Service</a>
+                    <!-- <a href="{{ url_for('faq') }}">FAQ</a> -->
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvUnC2VsupX9cadbHkDNxXHWT5H8r_DAc&libraries=places&callback=initMap"
+  async defer
+></script>
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  flatpickr("#time", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
+  });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const btn = document.getElementById('submitBtn');
+  const form = document.getElementById('bookingForm');
+
+  if (btn && form) {
+    btn.addEventListener('click', function () {
+      const isLoggedIn = document.body.dataset.loggedIn === "true";
+
+      form.requestSubmit(); 
+    });
+  }
+});
+</script>
+
+</body>
+</html>
+
+
+css
+/* Modern Color Variables */
+:root {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #333333;
+    --background-light: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-light: #555555;
+    --border-color: #e0e0e0;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--secondary-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+    background-color: #333333;
+    color: var(--secondary-color);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+/* Section Headers */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.section-header p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+}
+
+/* Header */
+.header {
+    background-color: var(--secondary-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.logo-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.logo-text .highlight {
+    color: var(--accent-color);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin-right: 2rem;
+}
+
+.nav-list li {
+    margin-left: 2rem;
+}
+
+.nav-list a {
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color var(--transition-speed);
+}
+
+.nav-list a:hover,
+.nav-list a.active {
+    color: var(--primary-color);
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+/* Profile Menu */
+.profile-menu {
+    position: relative;
+    margin-left: 20px;
+}
+
+.profile-circle {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+}
+
+.profile-circle:hover {
+    background-color: #333333;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    min-width: 120px;
+    z-index: 99;
+    box-shadow: var(--card-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    transition: background-color var(--transition-speed);
+}
+
+.dropdown-content a:hover {
+    background-color: #f5f5f5;
+}
+
+/* About Section */
+.about-section {
+    padding: 5rem 0;
+    background-color: var(--secondary-color);
+}
+
+.about-block {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.about-block.reverse {
+    flex-direction: row-reverse;
+}
+
+.about-content {
+    flex: 1;
+}
+
+.about-content h3 {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.about-features {
+    list-style: none;
+    margin-top: 2rem;
+}
+
+.about-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.about-features li i {
+    color: var(--primary-color);
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    height: 35rem; /* or 35rem if you want more height */
+    object-fit: cover;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+}
+
+
+/* Why Choose Us */
+.why-choose-us {
+    padding: 5rem 0;
+    background-color: #f7f7f7;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+border: 1px solid #999;}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--text-light);
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 5rem 0;
+background-color: #f7f7f7;}
+
+.testimonial-slider {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.testimonial-slides {
+    overflow: hidden;
+}
+
+.testimonial-slide {
+    display: none;
+}
+
+.testimonial-slide.active {
+    display: block;
+}
+
+.testimonial-content {
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+    padding: 3rem;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    border: 2px solid var(--primary-color);
+}
+
+.quote-icon {
+    color: var(--primary-color);
+    font-size: 2rem;
+    opacity: 0.3;
+    margin-bottom: 1rem;
+}
+
+.testimonial-content p {
+    font-style: italic;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.rating {
+    color: var(--primary-color);
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.author-info h4 {
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.author-info p {
+    color: var(--text-light);
+    margin-bottom: 0;
+    font-size: 0.875rem;
+}
+
+.testimonial-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    border: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    color: var(--primary-color);
+}
+
+.control-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.testimonial-indicators {
+    display: flex;
+    margin: 0 1rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    margin: 0 0.25rem;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+}
+
+.indicator.active {
+    background-color: var(--primary-color);
+}
+
+/* App Download */
+.app-download {
+    padding: 5rem 0;
+    background-color: var(--secondary-color);
+}
+
+.app-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #333333 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem;
+    color: var(--secondary-color);
+}
+
+.app-info {
+    flex: 1;
+}
+
+.app-info h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+.app-info p {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.app-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.app-btn {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: transform var(--transition-speed);
+}
+
+.app-btn:hover {
+    transform: translateY(-3px);
+    color: var(--primary-color);
+}
+
+.app-btn i {
+    font-size: 2rem;
+    margin-right: 0.75rem;
+}
+
+.app-btn-text span {
+    display: block;
+    font-size: 0.75rem;
+}
+
+.app-btn-text strong {
+    font-size: 1.125rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.app-image {
+    flex: 1;
+    text-align: center;
+}
+
+.app-image img {
+    max-height: 500px;
+    margin: 0 auto;
+}
+
+/* Contact Info - Black Background */
+.contact-info {
+    padding: 5rem 0;
+background-color: #f7f7f7 !important;
+}
+section.contact-info {
+  background-color: #f7f7f7 !important;
+  border-bottom: none !important;
+}
+
+.contact-info .section-header h2 {
+    color: #000;
+}
+
+.contact-info .section-header p {
+    color: #333;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.contact-card {
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed);
+    border: 1px solid var(--border-color);
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+}
+
+.contact-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.contact-card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.contact-card p {
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.contact-card a {
+    color: #333 !important;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.contact-card a:hover {
+    color: #333333;
+}
+
+.contact-cta {
+    text-align: center;
+}
+
+.contact-cta p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.contact-cta .btn-primary {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.contact-cta .btn-primary:hover {
+    background-color: #f5f5f5;
+    color: var(--primary-color);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 3rem 0 1rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-logo .logo-text {
+    color: var(--secondary-color);
+}
+
+.footer-logo .highlight {
+    color: var(--accent-color);
+}
+
+.footer-description {
+    margin: 1rem 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed);
+}
+
+.social-link:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.footer-column h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color var(--transition-speed);
+}
+
+.footer-links a:hover {
+    color: var(--secondary-color);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copyright p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-bottom-links a {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color var(--transition-speed);
+}
+
+.footer-bottom-links a:hover {
+    color: var(--secondary-color);
+}
+
+/* Back to Top */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-speed);
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: #333333;
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .about-block {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .about-block.reverse {
+        flex-direction: row-reverse !important;
+    }
+    
+    .app-content {
+        flex-direction: column;
+        padding: 2rem;
+    }
+    
+    .app-info {
+        text-align: center;
+    }
+    
+    .app-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-list {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .contact-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .app-image img {
+        max-height: 300px;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .about-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .about-content p {
+        font-size: 1rem;
+    }
+    
+    .about-image img {
+        height: 300px;
+    }
+}
+
+@media (max-width: 575px) {
+    .app-buttons {
+        flex-direction: column;
+    }
+    
+    .testimonial-content {
+        padding: 2rem;
+    }
+    
+    .about-block {
+        margin-bottom: 2rem;
+    }
+}
+
+
+
+.about-section .about-block {
+  display: flex !important;
+  align-items: center !important;
+  gap: 2rem !important;
+  margin-bottom: 3rem !important;
+}
+
+.about-section .about-block.reverse {
+  flex-direction: row-reverse !important;
+}
+
+.about-section .about-block .about-image,
+.about-section .about-block .about-content {
+  flex: 1 !important;
+}
+
+.about-section .about-block .about-image img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  border-radius: 8px !important;
+}
+.dashboard-sidebar {
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .dashboard-sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .dashboard-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .dashboard-main {
+    margin-left: 0 !important;
+  }
+}
+
+
+/* Responsive stacking on smaller screens */
+@media (max-width: 768px) {
+  .about-section .about-block {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  .about-section .about-block.reverse {
+    flex-direction: column-reverse !important;
+    text-align: center;
+  }
+
+  .about-section .about-block .about-content {
+    margin-top: 1rem !important;
+  }
+}
+.form-group select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #888;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+select {
+  position: relative;
+  z-index: 1;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+}
+
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+  user-select: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.custom-dropdown .selected {
+  background: #f5f5f5;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #000;
+}
+
+.custom-dropdown .options {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  color: #000;
+  z-index: 10;
+  width: 100%;
+  top: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-dropdown .option {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.custom-dropdown .option:hover {
+  background: #f0f0f0;
+}
+@media (max-width: 767px) {
+  /* push the hamburger slightly away from the login button */
+  .auth-buttons {
+    margin-right: 1rem;   /* space to the right of Login */
+  }
+  .mobile-menu-toggle {
+    display: block;       /* already there, just ensure it stays visible */
+    margin-left: 1rem;    /* gap between Login and ☰ */
+  }
+}
+@media (max-width: 767px) {
+  .nav-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: clamp(180px, 60%, 300px);
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    background-color: #f7f7f7;     /* light grey background */
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 999;
+  }
+
+  .nav-list.active {
+    display: flex;
+  }
+
+  .nav-list li {
+    width: 100%;
+  }
+
+  .nav-list li a {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: #000 !important;         /* black text */
+    text-decoration: none;
+    font-size: 1rem;
+  }
+
+  .nav-list li a:hover {
+    background-color: #e0e0e0;      /* lighter grey on hover */
+  }
+}
+
+i didnt sent you js, and whatever js you want to add, just add in the html itself, dont give any other file. 
+very important note: only do the designs i said,  no other, form design should be as it is.just do the change i need.
+very very important note: only give html and css file, no other file, if required of js, add in html only, but no other file like tsx or any, just html and css . no tsx

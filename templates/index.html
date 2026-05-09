@@ -1,0 +1,1452 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSD - Premium Taxi Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern.css') }}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- in your <head> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvUnC2VsupX9cadbHkDNxXHWT5H8r_DAc&libraries=places&callback=initMap" async defer></script>
+<!-- Flatpickr CSS -->
+
+<style>
+/* 
+TO CHANGE BACKGROUND IMAGE:
+Go to src/index.css file and change the --hero-background-image variable at the top.
+Replace the current URL with your image path like:
+--hero-background-image: url('/path/to/your/image.jpg');
+*/
+
+/* Modern Calendar Styles - Blue Theme */
+.flatpickr-calendar {
+    background: #fff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.flatpickr-months {
+    background: #2563eb !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 15px !important;
+}
+
+.flatpickr-month {
+    color: #fff !important;
+    font-weight: 600 !important;
+}
+
+.flatpickr-prev-month, .flatpickr-next-month {
+    color: #fff !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+}
+
+.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.flatpickr-weekdays {
+    background: #f8f9fa !important;
+    padding: 10px 0 !important;
+}
+
+.flatpickr-weekday {
+    color: #666 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+.flatpickr-days {
+    padding: 1px !important;
+}
+
+.flatpickr-day {
+    border-radius: 8px !important;
+    margin: 2px !important;
+    width: 35px !important;
+    height: 35px !important;
+    line-height: 35px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    color: #333 !important;
+}
+
+.flatpickr-day:hover {
+    background: #f0f0f0 !important;
+    border-color: #2563eb !important;
+}
+
+.flatpickr-day.selected {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+    color: #fff !important;
+}
+
+.flatpickr-day.today {
+    border-color: #2563eb !important;
+    color: #2563eb !important;
+    font-weight: 600 !important;
+}
+
+/* Modern Time Dropdown Styles */
+.time-dropdown-container {
+    position: relative;
+    width: 100%;
+}
+.time-dropdown-column {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+
+.time-selected {
+    background: #f5f5f5;
+    padding: 1rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    height: 3.2rem;
+    min-height: 3.2rem;
+}
+
+.time-selected:hover {
+    border-color: #888;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.time-selected::after {
+    content: '\f107';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: #666;
+    transition: transform 0.3s ease;
+}
+
+.time-selected.active::after {
+    transform: rotate(180deg);
+}
+
+.time-dropdowns {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+.time-dropdowns.active {
+    display: flex;
+    flex-direction: column;   /* stack hours/minutes over Save */
+  align-items: center;      /* center them */
+  overflow: visible; 
+}
+
+.hour-dropdown, .minute-dropdown {
+    flex: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hour-dropdown::-webkit-scrollbar,
+.minute-dropdown::-webkit-scrollbar {
+    display: none;
+}
+
+.hour-dropdown {
+    border-right: 1px solid #f0f0f0;
+}
+
+.time-option {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.time-option:hover {
+    background: #f8f9fa;
+}
+
+.time-option.selected {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Return Section Styles */
+.return-button {
+    background: #2563eb !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.return-button:hover {
+    background: #1d4ed8 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3) !important;
+}
+
+.return-fields {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.return-fields.active {
+    display: grid;
+}
+
+.return-cross {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.return-cross:hover {
+    background: #dc3545;
+    transform: scale(1.1);
+}
+
+/* Make all form inputs same size - Perfect sizing */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.time-selected {
+    padding: 1rem 1rem !important;
+    font-size: 0.95rem !important;
+    font-family: 'Poppins', sans-serif !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 0px !important;
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+    height: 3.2rem !important;
+    min-height: 3.2rem !important;
+    line-height: 1.2 !important;
+    .chat-icon .chat-outline {
+  stroke: #1d4ed8 !important;
+}
+
+.chat-icon .chat-eye-left,
+.chat-icon .chat-eye-right,
+.chat-icon .chat-smile {
+  stroke: #000 !important;
+}
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus {
+    outline: none !important;
+    border-color: #888 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+.time-selected {
+  color: #aaa !important; /* Light gray like placeholder */
+  /* font-style: italic; */
+}
+body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Match Tailwind’s text-4xl, font-bold, colors, spacing */
+  .airport-specialist h2 {
+    font-size: 2.25rem;       /* text-4xl */
+    font-weight: 700;         /* font-bold */
+    color: #1f2937;           /* text-gray-900 */
+    margin-bottom: 1rem;      /* mb-4 */
+    line-height: 1.2;
+  }
+  .airport-specialist h2 span {
+    color: #2563eb;           /* text-blue-600 */
+  }
+
+  .airport-specialist .airport-lead {
+    color: #4b5563;           /* text-gray-600 */
+    margin-bottom: 2rem;      /* mb-8 */
+    line-height: 1.625;       /* leading-relaxed */
+  }
+
+  .airport-specialist .airport-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;             /* space-x-3 */
+    padding: 0.75rem;         /* p-3 */
+    background: #f9fafb;      /* bg-gray-50 */
+    border-radius: 0.5rem;    /* rounded-lg */
+    margin-bottom: 1rem;
+  }
+
+  .airport-specialist .airport-item svg {
+    width: 1.25rem;           /* w-5 */
+    height: 1.25rem;          /* h-5 */
+    color: #2563eb;           /* text-blue-600 */
+    flex-shrink: 0;
+  }
+
+  .airport-specialist .airport-cta {
+    display: inline-block;
+    background: #1f2937;      /* slate-900 */
+    color: #fff;
+    padding: 0.75rem 2rem;    /* px-8 py-3 */
+    border-radius: 0.5rem;    /* rounded-lg */
+    font-weight: 500;         /* font-medium */
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .airport-specialist .airport-cta:hover {
+    background: #111827;      /* slate-800 */
+  }
+  .th-a {
+    color: #60A5FA;
+  }
+  .th-b {
+color: #4ADE80;
+  }
+  .th-c {
+color: #C084FC;
+  }
+</style>
+
+</head>
+<body data-logged-in="{{ 'true' if name else 'false' }}">       
+    <!-- Header with continuous background -->
+    <header class="bsd-primary-navigation">
+    <div class="bsd-nav-container">
+        <!-- Logo Section -->
+        <div class="bsd-brand-section">
+            <a href="{{ url_for('index') }}" class="bsd-logo-text">
+                <span class="bsd-logo-white">BSD</span><span class="bsd-logo-blue">Transport</span>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="bsd-desktop-menu">
+            <ul class="bsd-nav-links">
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('index') }}" class="bsd-nav-link {% if request.endpoint == 'index' %}bsd-nav-active{% endif %}">Home</a>
+                </li>
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('about') }}" class="bsd-nav-link {% if request.endpoint == 'about' %}bsd-nav-active{% endif %}">About</a>
+                </li>
+                <li class="bsd-nav-item">
+                    <a href="{{ url_for('services') }}" class="bsd-nav-link {% if request.endpoint == 'services' %}bsd-nav-active{% endif %}">Services</a>
+                </li>
+                {% if session.get('name') %}
+                    <li class="bsd-nav-item dropdown-parent">
+                        <a href="javascript:void(0);" class="bsd-nav-link" onclick="toggleDropdown()">
+                            {{ session['name'][0]|upper }}
+                        </a>
+                        <div id="dropdownMenu" class="dropdown-content" style="display: none;">
+                            <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}">Dashboard</a>
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="bsd-nav-item">
+                        <a href="{{ url_for('login') }}" class="bsd-login-button">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="bsd-hamburger-btn" id="bsdHamburgerBtn" onclick="toggleMobileMenu()">
+            <span class="bsd-hamburger-line"></span>
+            <span class="bsd-hamburger-line"></span>
+            <span class="bsd-hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="bsd-mobile-menu" id="bsdMobileMenu">
+        <div class="bsd-mobile-menu-content">
+            <div class="bsd-mobile-nav-links">
+                <a href="{{ url_for('index') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'index' %}bsd-mobile-active{% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'about' %}bsd-mobile-active{% endif %}">About</a>
+                <a href="{{ url_for('services') }}" class="bsd-mobile-nav-link {% if request.endpoint == 'services' %}bsd-mobile-active{% endif %}">Services</a>
+            </div>
+            <div class="bsd-mobile-divider"></div>
+            <div class="bsd-mobile-login-section">
+                {% if session.get('name') %}
+                    <a href="{% if session['user_type'] == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_dashboard') }}{% endif %}" class="bsd-mobile-login-btn">Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="bsd-mobile-login-btn">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="bsd-mobile-login-btn">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+    <!-- Hero Section with continuous background -->
+    <section class="hero-continuous">
+        <div class="container">
+            <div class="hero-content">
+                <!-- <div class="hero-badge">Premium Taxi Service</div> -->
+                <h1 class="hero-title">Paris Airport <span class="highlight">Transfer #1</span></h1>
+                <p class="hero-subtitle"> 100% In-House Service, No Subcontractors.</p>
+                <div class="hero-features">
+
+
+                    <div class="feature-item th-a">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-icon lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                        <span>Safe & Secure</span>
+                    </div>
+
+
+                    <div class="feature-item th-b">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>24/7 Available</span>
+                    </div>
+                    <div class="feature-item th-c">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star-icon lucide-star"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                        <span>Premium Service</span>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-form-container">
+                <!-- ... keep existing form code exactly as it is ... -->
+                <form id="bookingForm" class="booking-form" method="POST" action="/ride-booking">
+                    <div class="form-tabs">
+                        <button type="button" class="tab-btn active" data-tab="standard">Standard</button>
+                        <button type="button" class="tab-btn" data-tab="airport">Airport</button>
+                    </div>
+                    <input type="hidden" id="trip_type" name="trip_type" value="standard">
+
+                    
+                    <div class="form-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pickup"><i class="fas fa-map-marker-alt" ></i>     Pickup</label>
+
+                                <input type="text" id="pickup" name="pickup" placeholder="Enter Your Pickup Location Address" required>
+                                <input type="hidden" id="pickup_valid" name="pickup_valid" value="0">
+
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dropoff"><i class="fas fa-map-marker-alt" ></i>     Destination</label>
+                                <input type="text" id="dropoff" name="dropoff" placeholder="Enter Your Destination Location Address" required>
+                                <input type="hidden" id="dropoff_valid" name="dropoff_valid" value="0">
+
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="date">
+                                    <i class="fas fa-calendar-alt"></i>     Date
+                                </label>
+                                <input type="text" id="date" name="date" placeholder="Date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="time"><i class="fas fa-clock"></i>     Time</label>
+                                <div class="time-dropdown-container" >
+                                    <div class="time-selected" id="timeSelected" >Time</div>
+                                    <div class="time-dropdowns" id="timeDropdowns">
+                                        <div class="hour-dropdown" id="hourDropdown" >
+                                            <!-- Hours will be populated by JavaScript -->
+                                        </div>
+                                        <div class="minute-dropdown" id="minuteDropdown">
+                                            <!-- Minutes will be populated by JavaScript -->
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="hour" id="hourInput" required >
+                                    <input type="hidden" name="minute" id="minuteInput" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row" id="airportFields" style="display: none;">
+                            
+                        </div>
+                        
+                        <div class="form-row" style="position: relative;">
+                            <div id="returnContainer">
+                                <button type="button" class="return-button" id="returnBtn">
+                                    <i class="fas fa-plus"></i>
+                                    Add Return Trip
+                                </button>
+                                <div class="return-fields" id="returnFields">
+                                   <div class="form-row two-cols">
+                                      <div class="form-group">
+                                        <label for="return_date"><i class="fas fa-calendar-alt"></i> Return Date</label>
+                                        <input
+                                          type="text"
+                                          id="return_date"
+                                          name="return_date"
+                                          placeholder="Return Date"
+                                          required
+                                        />
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="return_time"><i class="fas fa-clock"></i>  Time</label>
+                                        <div class="time-dropdown-container">
+                                          <div class="time-selected" id="returnTimeSelected">Return Time</div>
+                                          <div class="time-dropdowns" id="returnTimeDropdowns">
+                                            <div class="hour-dropdown"   id="returnHourDropdown"></div>
+                                            <div class="minute-dropdown" id="returnMinuteDropdown"></div>
+                                          </div>
+                                          <input
+                                            type="hidden"
+                                            id="returnHourInput"
+                                            name="return_hour"
+                                            required
+                                          />
+                                          <input
+                                            type="hidden"
+                                            id="returnMinuteInput"
+                                            name="return_minute"
+                                            required
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <button type="button" class="return-cross" id="returnCross">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="return_trip" name="return_trip" value="0">
+                        </div>
+
+                        
+                        <div class="form-row passengers-row">
+                            <label>Passagers</label>
+                            <div class="passengers-control">
+                                <button type="button" class="passenger-btn minus-btn">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span id="passengerCount">2</span>
+                                <input type="hidden" id="passengers" name="passengers" value="2">
+                                <button type="button" class="passenger-btn plus-btn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-footer">
+                           <button type="button" class="search-btn" id="submitBtn">
+                                Book Now!
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ... keep all existing sections exactly as they are ... -->
+    <section class="services-section">
+  <div class="services-container">
+    <div class="service-item">
+      <div class="service-icon">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="84"
+  height="84"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#000000"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Clock paths (stay black) -->
+  <path d="M4 13c.325 2.532 1.881 4.781 4 6" />
+  <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2" />
+  <path d="M4 5v4h4" />
+
+  <!-- "2" (blue) -->
+  <path 
+    d="M12 15h2a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-1a1 1 0 0 0 -1 1v1a1 1 0 0 0 1 1h2" 
+    stroke="#1d4ed8"
+  />
+
+  <!-- "4" (two segments = blue) -->
+  <path 
+    d="M18 15v2a1 1 0 0 0 1 1h1" 
+    stroke="#1d4ed8"
+  />
+  <path 
+    d="M21 15v6" 
+    stroke="#1d4ed8"
+  />
+</svg>
+      </div>
+      <h3 class="service-title">Available 24/7
+</h3>
+      <p class="service-description">Our service runs around the clock — whether it’s early morning or late night.</p>
+    </div>
+
+    <div class="service-item">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check-icon lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+      <h3 class="service-title">Guaranteed fixed price 
+</h3>
+      <p class="service-description">Enjoy transparent, all-inclusive rates — no surge pricing, no hidden fees, no unpleasant surprises.</p>
+    </div>
+
+    <div class="service-item">
+      <div class="service-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-car-taxi-front-icon lucide-car-taxi-front"><path d="M10 2h4"/><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"/><path d="M7 14h.01"/><path d="M17 14h.01"/><rect width="18" height="8" x="3" y="10" rx="2"/><path d="M5 18v2"/><path d="M19 18v2"/></svg>
+      </div>
+      <h3 class="service-title">Premium vehicles, cleaned daily</h3>
+      <p class="service-description">Travel in comfort and style with our high-end vehicles, thoroughly cleaned and maintained.</p>
+    </div>
+
+    <div class="service-item">
+      <div class="service-icon">
+<!--
+tags: [automatic, robot, assistant, support]
+category: Communication
+unicode: "f38a"
+version: "1.91"
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+     viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+     class="lucide lucide-message-circle-more-icon lucide-message-circle-more">
+
+  <!-- Outline -->
+  <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+
+  <!-- Blue dots with forced stroke -->
+  <path d="M8 12h.01" style="stroke: #1d4ed8 !important;"/>
+  <path d="M12 12h.01" style="stroke: #1d4ed8 !important;"/>
+  <path d="M16 12h.01" style="stroke: #1d4ed8 !important;"/>
+</svg>
+
+
+
+
+      </div>
+      <h3 class="service-title">Responsive customer support
+</h3>
+      <p class="service-description">Our friendly support team is always ready to assist you quickly — by phone, WhatsApp, or email.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- <section class="horizontal-services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Choose Our Premium Service</h2>
+            <p>Discover the advantages that set us apart from the competition</p>
+        </div>
+        <div class="cards-slider-container">
+            <button class="slider-nav-button left-nav" aria-label="Scroll left">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="cards-slider">
+                <div class="cards-track" id="cardsTrack">
+                  
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <h3>Personalized Airport Pickup</h3>
+                        <p>Your driver will be waiting for you at the airport holding a sign with your name — no stress, no confusion, even after a long flight.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-car-side"></i>
+                        </div>
+                        <h3>Unmarked Vehicle</h3>
+                        <p>Unlike Uber, our vehicles have no VTC stickers or commercial signs, offering more discretion and a premium experience.</p>
+                    </div>
+                    
+                    
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3>Fixed Prices</h3>
+                        <p>Enjoy transparent, all-inclusive rates — no surge pricing, no hidden fees, no unpleasant surprises.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3>Professional Drivers</h3>
+                        <p>Our drivers are experienced, punctual, and bilingual, ready to help and share local tips with international travelers.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Advance Booking</h3>
+                        <p>Book your ride in advance, receive instant confirmation, and pay securely online — peace of mind guaranteed.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Customer Support</h3>
+                        <p>Unlike large platforms, we provide personalized assistance via phone, WhatsApp, or email, before and during your trip.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-plane-arrival"></i>
+                        </div>
+                        <h3>Flight Delay Protection</h3>
+                        <p>We monitor your flight in real-time. If your flight is delayed, your driver will adjust the pickup time accordingly — at no extra cost.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-suitcase-rolling"></i>
+                        </div>
+                        <h3>Spacious Vehicles</h3>
+                        <p>Travel comfortably in vehicles tailored to your needs, with space for suitcases, strollers, sports gear, or baby seats.</p>
+                    </div>
+                    
+                   
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>Private Driver Available</h3>
+                        <p>Want to explore more? Request the same driver for your entire trip — perfect for tours, business travel, or families.</p>
+                    </div>
+                    
+                    
+                    <div class="service-slide-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Family & Group Service</h3>
+                        <p>We offer child seats, vans, and group transfers, ensuring a safe and comfortable ride for everyone — from solo travelers to large families.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="slider-nav-button right-nav" aria-label="Scroll right">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section> -->
+
+<!-- How It Works Section -->
+<!-- How It Works -->
+<section class="how-it-works">
+  <div class="container">
+    <div class="how-it-inner">
+      <div class="text-center mb-16">
+        <h2>How It Works</h2>
+        <p>Seamless 3-step journey to your perfect ride</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">
+            <img src="/static/images/i01.jpg" height="85em">
+          </div>
+          <h3>Plan Your Ride</h3>
+          <p>Choose your pickup and drop-off locations, date, and time - it's fast and easy.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">
+           <img src="/static/images/i02.jpg" height="85em">
+          </div>
+          <h3>Book Instantly</h3>
+          <p>Fill out the booking form with your travel details and preferences in under a minute.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">
+            <img src="/static/images/i03.jpg" height="85em">
+          </div>
+          <h3>Meet Your Driver</h3>
+          <p>Get instant confirmation and meet your professional driver right on time at your chosen spot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="divider-section">
+  <div class="section-divider"></div>
+</section>
+<section class="airport-specialist">
+    <div class="container">
+        <div class="airport-content">
+            <div class="airport-text">
+                <!-- <div class="number-one-badge">
+                    <span>#1 in Paris</span>
+                </div> -->
+                <h2>Transfer from and to <br><span style="color:#2563eb">Paris Airports</span>
+</h2>
+                <p class="airport-lead">
+                    BSD Transport specializes in airport transfers to/from all major airports in Paris. Our punctual drivers monitor your flight, ensure smooth arrivals, and wait free of charge if you're delayed. Whether you need a child seat, extra luggage space, or an English-speaking driver — we've got you covered.
+                </p>
+                
+                <div class="airport-list">
+                    <div class="airport-item">
+                     <svg xmlns="http://www.w3.org/2000/svg"
+     width="24" height="24"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+  <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4
+           21 3c-1-.5-3 0-4.5 1.5L13 8
+           4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5
+           c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1
+           1 3 2 2 3 1-1v-3l3-2 3.5
+           5.3c.3.4.8.5 1.3.3l.5-.2
+           c.4-.3.6-.7.5-1.2z"/>
+</svg>
+
+                        <span>Charles de Gaulle Airport</span>
+                    </div>
+                    <div class="airport-item">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+     width="24" height="24"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+  <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4
+           21 3c-1-.5-3 0-4.5 1.5L13 8
+           4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5
+           c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1
+           1 3 2 2 3 1-1v-3l3-2 3.5
+           5.3c.3.4.8.5 1.3.3l.5-.2
+           c.4-.3.6-.7.5-1.2z"/>
+</svg>
+
+                        <span>Orly Airport</span>
+                    </div>
+                    <div class="airport-item">
+                     <svg xmlns="http://www.w3.org/2000/svg"
+     width="24" height="24"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+  <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4
+           21 3c-1-.5-3 0-4.5 1.5L13 8
+           4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5
+           c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1
+           1 3 2 2 3 1-1v-3l3-2 3.5
+           5.3c.3.4.8.5 1.3.3l.5-.2
+           c.4-.3.6-.7.5-1.2z"/>
+</svg>
+
+                        <span>Beauvais Airport</span>
+                    </div>
+                </div>
+                
+                <a href="#" class="airport-cta">Book Airport Transfer</a>
+            </div>
+            
+            <div class="airport-image">
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mission-values-section">
+  <div class="mission-header">
+    <!-- <span class="mission-badge">OUR FOUNDATION</span> -->
+    <h2 class="mission-title">Mission & Core Values</h2>
+    <p class="mission-subtitle">Guided by principles that put customers first</p>
+  </div>
+  
+  <div class="mission-grid">
+    <div class="mission-card">
+      <div class="mission-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M9 12l2 2 4-4"/>
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
+      </div>
+      <h3 class="mission-card-title">Unmarked vehicle for more privacy</h3>
+      <p class="mission-card-description">Unlike Uber, our vehicles have no VTC stickers or commercial signs, offering more discretion and a premium experience.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <h3 class="mission-card-title">Professional drivers who speak English and French</h3>
+      <p class="mission-card-description">Our drivers are experienced, punctual, and bilingual, ready to help and share local tips with international travelers.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <h3 class="mission-card-title">Advance booking & secure payment</h3>
+      <p class="mission-card-description">Book your ride in advance, receive instant confirmation, and pay securely online — peace of mind guaranteed.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+          <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+          <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+        </svg>
+      </div>
+      <h3 class="mission-card-title">Spacious vehicles adapted to luggage needs</h3>
+      <p class="mission-card-description">Travel comfortably in vehicles tailored to your needs, with space for suitcases, strollers, sports gear, or baby seats.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <h3 class="mission-card-title">Private driver available throughout your stay</h3>
+      <p class="mission-card-description">Want to explore more? Request the same driver for your entire trip — perfect for tours, business travel, or families.</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M16 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <h3 class="mission-card-title">Tailored service for families and groups</h3>
+      <p class="mission-card-description">We offer child seats, vans, and group transfers, ensuring a safe and comfortable ride for everyone — from solo travelers to large families.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Trusted by thousands of satisfied passengers</p>
+            </div>
+            <div class="testimonial-slider">
+                <div class="testimonial-slides">
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"BSD has been my go-to taxi service for the past year. Their drivers are always punctual, professional, and friendly. The booking process is straightforward and the cars are always clean and comfortable."</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-author">
+                                <!-- <img src="{{ url_for('static', filename='images/testimonial-1.jpg') }}" alt="Sarah Johnson"> -->
+                                <div class="author-info">
+                                    <h4>Sarah Johnson</h4>
+                                    <p>Regular Customer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"I've used BSD Transport for both business and personal travel, and they never disappoint. The option to schedule rides in advance is particularly useful for my airport transfers. Their luxury vehicles are immaculate and truly comfortable."</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="testimonial-author">
+                                <!-- <img src="{{ url_for('static', filename='images/testimonial-2.jpg') }}" alt="Michael Robinson"> -->
+                                <div class="author-info">
+                                    <h4>Michael Robinson</h4>
+                                    <p>Business Traveler</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p>"As a visitor to the city, I was impressed by the knowledge and helpfulness of my BSD driver. He suggested some great local spots and took the most efficient route to my destinations. The fare was very reasonable too!"</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-info">
+                                    <h4>Emily Chen</h4>
+                                    <p>Tourist</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-controls">
+                    <button class="control-btn prev" aria-label="Previous testimonial">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="testimonial-indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
+                    </div>
+                    <button class="control-btn next" aria-label="Next testimonial">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+ <section class="contact-info">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contact Us</h2>
+                <p>We're here to help with your transportation needs</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+                    </div>
+                    <h3>Phone</h3>
+                    <p>24/7 Customer Support</p>
+                    <a href="tel:+18001234567">+1 (800) 123-4567</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-icon lucide-mail"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+                    </div>
+                    <h3>Email</h3>
+                    <p>Send us your inquiries</p>
+                    <a href="mailto:info@ride.com">info@cityride.com</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+ <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <h3>Office</h3>
+                    <p>Visit our main office</p>
+                    <address>123 Taxi Street, Downtown<br>New York, NY 10001</address>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3>Working Hours</h3>
+                    <p>We operate 24/7</p>
+                    <span>Booking & Support Available Anytime</span>
+                </div>
+            </div>
+          
+        </div>
+    </section>
+
+
+    
+
+<!-- footer.html -->
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__grid">
+      <!-- Company Info (spans 2 on lg) -->
+      <div class="footer__company footer__company--span2">
+        <div class="footer__logo">
+          BSD<span class="footer__logo--highlight">Transport</span>
+        </div>
+        <p class="footer__description">
+          Premium airport transfer service in Paris. We provide reliable, comfortable, and professional transportation solutions for travelers who value quality and punctuality.
+        </p>
+        <div class="footer__social">
+          <a href="#" class="footer__social-icon footer__social-icon--facebook" aria-label="Facebook">f</a>
+          <a href="#" class="footer__social-icon footer__social-icon--twitter"  aria-label="Twitter">t</a>
+          <a href="#" class="footer__social-icon footer__social-icon--linkedin" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer__section">
+        <h3 class="footer__title">Quick Links</h3>
+        <ul class="footer__list">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Airport Transfer</a></li>
+          <li><a href="#">City Tours</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Our Services -->
+      <div class="footer__section">
+        <h3 class="footer__title">Our Services</h3>
+        <ul class="footer__list">
+          <li><a href="#">Airport Transfers</a></li>
+          <li><a href="#">City Tours</a></li>
+          <li><a href="#">Business Travel</a></li>
+          <li><a href="#">Group Transportation</a></li>
+          <li><a href="#">Wedding Transport</a></li>
+          <li><a href="#">Hourly Rentals</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2025 BSD Transport. All rights reserved.</p>
+      <div class="footer__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modern.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvUnC2VsupX9cadbHkDNxXHWT5H8r_DAc&libraries=places&callback=initMap" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize Flatpickr with modern styling
+      flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
+      });
+      
+      flatpickr("#return_date", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
+      });
+
+      // Time dropdown functionality
+     function initTimeDropdown(
+      timeSelectedId,
+      timeDropdownsId,
+      hourDropdownId,
+      minuteDropdownId,
+      hourInputId,
+      minuteInputId
+    ) {
+      const timeSelected   = document.getElementById(timeSelectedId);
+      const timeDropdowns  = document.getElementById(timeDropdownsId);
+      const hourDropdown   = document.getElementById(hourDropdownId);
+      const minuteDropdown = document.getElementById(minuteDropdownId);
+      const hourInput      = document.getElementById(hourInputId);
+      const minuteInput    = document.getElementById(minuteInputId);
+
+      // ─── 1) STACK & ISOLATE SCROLL ───────────────────────
+      // ensure the panel lays out in a column, not a row
+      timeDropdowns.style.flexDirection = 'column';
+      timeDropdowns.style.alignItems    = 'center';
+      // prevent any scroll chaining up to the page
+      hourDropdown.style.overscrollBehavior   = 'contain';
+      minuteDropdown.style.overscrollBehavior = 'contain';
+
+      // ─── 2) WRAP COLUMNS & CLEAR OLD CONTENT ────────────
+      timeDropdowns.innerHTML = '';
+      const cols = document.createElement('div');
+      cols.style.display = 'flex';
+      cols.style.width   = '100%';
+      cols.style.gap     = '8px';
+      timeDropdowns.appendChild(cols);
+      cols.appendChild(hourDropdown);
+      cols.appendChild(minuteDropdown);
+
+      // make each column scrollable
+      [hourDropdown, minuteDropdown].forEach(drop => {
+        drop.style.flex           = '1';
+        drop.style.maxHeight      = '200px';
+        drop.style.overflowY      = 'auto';
+        drop.style.scrollBehavior = 'smooth';
+        drop.innerHTML            = '';  // clear any old options
+      });
+
+      // ─── 3) POPULATE HOURS ───────────────────────────────
+      for (let h = 0; h < 24; h++) {
+        const opt = document.createElement('div');
+        opt.className = 'time-option';
+        opt.textContent = h.toString().padStart(2, '0');
+        opt.addEventListener('click', () => {
+          hourInput.value = h;
+          hourDropdown.querySelectorAll('.time-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          // scroll *just* this box
+          hourDropdown.scrollTo({
+            top: opt.offsetTop - hourDropdown.clientHeight/2 + opt.clientHeight/2,
+            behavior: 'smooth'
+          });
+          updateSelected();
+        });
+        hourDropdown.appendChild(opt);
+      }
+
+      // ─── 4) POPULATE MINUTES ─────────────────────────────
+      for (let m = 0; m < 60; m += 5) {
+        const opt = document.createElement('div');
+        opt.className = 'time-option';
+        opt.textContent = m.toString().padStart(2, '0');
+        opt.addEventListener('click', () => {
+          minuteInput.value = m;
+          minuteDropdown.querySelectorAll('.time-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          minuteDropdown.scrollTo({
+            top: opt.offsetTop - minuteDropdown.clientHeight/2 + opt.clientHeight/2,
+            behavior: 'smooth'
+          });
+          updateSelected();
+        });
+        minuteDropdown.appendChild(opt);
+      }
+
+      // ─── 5) ADD SAVE BUTTON ──────────────────────────────
+      const saveBtn = document.createElement('button');
+      saveBtn.type      = 'button';
+      saveBtn.className = 'time-save-btn';
+      saveBtn.textContent = 'Save';
+      saveBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        timeDropdowns.classList.remove('active');
+        timeSelected.classList.remove('active');
+      });
+      timeDropdowns.appendChild(saveBtn);
+
+      // ─── 6) UPDATE THE VISIBLE TIME ─────────────────────
+      function updateSelected() {
+        if (hourInput.value !== '' && minuteInput.value !== '') {
+          const hh = hourInput.value.toString().padStart(2, '0');
+          const mm = minuteInput.value.toString().padStart(2, '0');
+          timeSelected.textContent = `${hh}:${mm}`;
+          timeSelected.classList.add('filled');
+        }
+      }
+
+      // ─── 7) TOGGLE & OUTSIDE CLICK ───────────────────────
+      timeSelected.addEventListener('click', e => {
+        e.stopPropagation();
+        timeDropdowns.classList.toggle('active');
+        timeSelected.classList.toggle('active');
+      });
+      document.addEventListener('click', () => {
+        timeDropdowns.classList.remove('active');
+        timeSelected.classList.remove('active');
+      });
+      timeDropdowns.addEventListener('click', e => e.stopPropagation());
+    }
+
+      // Initialize main time dropdown
+      initTimeDropdown('timeSelected', 'timeDropdowns', 'hourDropdown', 'minuteDropdown', 'hourInput', 'minuteInput');
+ 
+      // Initialize return time dropdown
+      initTimeDropdown('returnTimeSelected', 'returnTimeDropdowns', 'returnHourDropdown', 'returnMinuteDropdown', 'returnHourInput', 'returnMinuteInput');
+      // Return functionality
+      const returnBtn = document.getElementById('returnBtn');
+      const returnFields = document.getElementById('returnFields');
+      const returnCross = document.getElementById('returnCross');
+      const returnTripInput = document.getElementById('return_trip');
+      returnBtn.addEventListener('click', function() {
+        returnFields.classList.add('active');
+        returnTripInput.value = '1';
+        returnBtn.style.display = 'none';
+      });
+
+      returnCross.addEventListener('click', function() {
+        returnFields.classList.remove('active');
+        returnTripInput.value = '0';
+        returnBtn.style.display = 'inline-flex';
+        // Clear return fields
+        document.getElementById('return_date').value = '';
+        document.getElementById('returnHourInput').value = '';
+        document.getElementById('returnMinuteInput').value = '';
+    document.getElementById('returnTimeSelected').textContent = 'Return Time';
+      });
+      // Submit functionality
+      const btn = document.getElementById('submitBtn');
+      const form = document.getElementById('bookingForm');
+      if (btn && form) {
+        btn.addEventListener('click', function () {
+          const isLoggedIn = document.body.dataset.loggedIn === "true";
+          form.requestSubmit(); 
+        });
+      }
+
+      // Hamburger menu functionality
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navList = document.getElementById('navList');
+      
+      if (mobileToggle && navList) {
+        mobileToggle.addEventListener('click', function() {
+          navList.classList.toggle('active');
+          mobileToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!mobileToggle.contains(e.target) && !navList.contains(e.target)) {
+            navList.classList.remove('active');
+            mobileToggle.classList.remove('active');
+          }
+        });
+      }
+
+      // Profile dropdown functionality
+      window.toggleDropdown = function() {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (dropdownMenu) {
+          dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+        }
+      };
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        const profileMenu = document.querySelector('.profile-menu');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (profileMenu && dropdownMenu && !profileMenu.contains(e.target)) {
+          dropdownMenu.style.display = 'none';
+        }
+      });
+    });
+    flatpickr("#date", {
+      dateFormat: "Y-m-d",
+      minDate: "today"
+    });
+
+    flatpickr("#return_date", {
+      dateFormat: "Y-m-d",
+      minDate: "today"
+    });
+    </script>
+    <script>
+  let lastScroll = 0;
+  const header = document.querySelector('.header-continuous');
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll > lastScroll && currentScroll > 100) {
+      // Scrolling down
+      header.style.transform = 'translateY(-100%)';
+    } else {
+      // Scrolling up
+      header.style.transform = 'translateY(0)';
+    }
+
+    lastScroll = currentScroll;
+  });
+</script>
+
+</body>
+</html>
